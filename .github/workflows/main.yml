@@ -1,19 +1,18 @@
-on: 
-  push:
-    branches:
-      - main
-name: 🚀 Deploy website on push
+on: [push]
+
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy_job:
     runs-on: ubuntu-latest
+    name: deploy
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.2
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: deploy file
+          uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+          with:
+              username: 'root'
+              server: 'your server ip'
+              ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
+              local_path: './static/*'
+              remote_path: '/var/www/app'
+              sftpArgs: '-o ConnectTimeout=5'
