@@ -1,9 +1,7 @@
-import sqlite from 'sqlite-sync';
-sqlite.connect('users.db');
-
+import * as bdd from './connexionbdd.js';
 export function getUser (username,password)
 {
-        var result = sqlite?.run(`SELECT * FROM users WHERE username LIKE '${username}' AND password LIKE '${password}'`);
+        var req = bdd?.run(`SELECT * FROM users WHERE username LIKE '${username}' AND password LIKE '${password}'`);
         return result;
     
 }

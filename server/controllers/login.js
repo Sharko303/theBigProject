@@ -1,5 +1,4 @@
 import * as requete from '../models/auth.js'
-import md5 from 'md5'
 export function identification(request, reponse){
 
     
@@ -7,7 +6,7 @@ export function identification(request, reponse){
     let password = request?.body?.password;
     //let sel = requete.getSalt(username);
     //password = md5(password + sel);
-    password = md5(password);
+    //password = md5(password);
 
         if(username && password)
             {
