@@ -1,7 +1,7 @@
 export const Home = () => {
     return (
         <div>
-            <a href=""> Test </a>
+            <a href="/test"> Test </a>
         </div>
     )
 }
