@@ -1,8 +1,11 @@
+import {Menu} from '../components/Menu';
+
 export const Home = () => {
     return (
         <div>
-            <a href="/test"> Test </a>
+        <Menu/>
+            <a href="/connexion"> Test </a>
+
         </div>
     )
 }
-
