@@ -1,4 +1,5 @@
 import './App.css';
+import './DarkMode.css';
 import { Home } from './screens/Home'
 import { Navigate, Route, Routes } from "react-router-dom"
 import { Inscription } from './screens/Inscription'
@@ -8,10 +9,10 @@ function App() {
   return (
     <div>
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/home' element={<Home />} />
-      <Route path='/connexion' element={<Connexion />} />
-      <Route path='/inscription' element={<Inscription />} />
+      <Route path='/' element={<Home />}/>
+      <Route path='/home' element={<Home />}/>
+      <Route path='/connexion' element={<Connexion />}/>
+      <Route path='/inscription' element={<Inscription />}/>
       <Route path='*' element={<Navigate to='/' />} />
     </Routes>
     </div>

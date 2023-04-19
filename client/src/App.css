@@ -14,18 +14,18 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: var(--body_background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--body_color);
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--link_color);
 }
 
 @keyframes App-logo-spin {
@@ -36,3 +36,54 @@
     transform: rotate(360deg);
   }
 }
+.navbar{
+  transition:all 0.5s;
+}
+.navbar-scrolled
+{
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+/* on fais le style inscription / connexion */
+
+.gradient-custom-2 {
+  background: #fccb90;
+  background: -webkit-linear-gradient(to right, #b8b8b8, #707070, #303030, #383838);
+  background: linear-gradient(to right, #cccccc, #777777, #4e4e4e, #252525);
+  color: white;;
+  }
+  
+  @media (min-width: 768px) {
+  .gradient-form {
+  height: 100vh !important;
+  }
+  }
+  
+  @media (min-width: 769px) {
+  .gradient-custom-2 {
+  border-top-right-radius: .3rem;
+  border-bottom-right-radius: .3rem;
+  }
+  }
+
+  /* On ajoute un background a notre connexion et inscription */
+  .conins-style
+  {
+    background-color: rgb(235, 235, 235);
+  }
+/* On change la couleur du menu dans les page connexion et inscription (mode sombre ?)*/
+
+  .navcolor{
+    background-color: #212529;
+  }
+
+/*On change les couleurs des bordure des inputs par default*/
+
+  .form-control:focus {
+    border-color: #383838 !important;
+    box-shadow: 0 0 5px #383838 !important;
+  }
+
+  /* darkmode */
+
+  

@@ -10,37 +10,40 @@ export function identification(request, response) {
   let username = request?.body.username;
   let password = request?.body.password;
   let passwordHash;
-
-  requete.getSalt(username, (error, salt) => {
-    if (error) {
-      console.error(error);
-      response.status(500).send('Erreur de connexion à la base de données');
-    } else {
-      passwordHash = bcrypt.hashSync(password, salt); //  Hash le mot de passe avec le sel
-      console.log("password hash :", passwordHash)
-      console.log(salt);
-
-      if (username && passwordHash) {
-        requete.getUser(username, passwordHash, (error, results) => {
-          if (error) {
-            console.error(error);
-            response.status(500).send('Erreur de connexion à la base de données');
-          } else {
-            if (results.length > 0) {
-              console.log('Identifiants valides');
-              const token = jwt.sign({ username }, 'secret');
-              response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });
-            } else {
-              console.log('Identifiants invalides');
-              response.status(401).json({ status: 'error', message: 'Nom d\'utilisateur ou mot de passe invalide' });
-            }
-          }
-        });
+  if (username && password) {
+    requete.getSalt(username, (error, salt) => {
+      if (error) {
+        console.error(error);
+        response.status(500).send('Erreur de connexion à la base de données');
       } else {
-        response.status(401).json({ status: 'error', message: 'Entrez un nom de compte et un mot de passe !' });
+        passwordHash = bcrypt.hashSync(password, salt); //  Hash le mot de passe avec le sel
+        console.log("password hash :", passwordHash)
+        console.log(salt);
+
+        if (username && passwordHash) {
+          requete.getUser(username, passwordHash, (error, results) => {
+            if (error) {
+              console.error(error);
+              response.status(500).send('Erreur de connexion à la base de données');
+            } else {
+              if (results.length > 0) {
+                console.log('Identifiants valides');
+                const token = jwt.sign({ username }, 'secret');
+                response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });
+              } else {
+                console.log('Identifiants invalides');
+                response.status(401).json({ status: 'error', message: 'Nom d\'utilisateur ou mot de passe invalide' });
+              }
+            }
+          });
+        } else {
+          response.status(401).json({ status: 'error', message: 'Entrez un nom de compte et un mot de passe !' });
+        }
       }
-    }
-  });
+    });
+  }else {
+    response.status(401).json({ status: 'error', message: 'Entrez un nom de compte et un mot de passe !' });
+  }
 }
 
 export function inscription(request, response) {
