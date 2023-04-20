@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Theme } from './Theme';
+//import { Theme } from './Theme';
+
 export const Menu = (props) => {
 
   const token = localStorage.getItem('token');

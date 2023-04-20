@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu } from '../components/Menu';
 import { Theme } from '../components/Theme';
+import {Footer} from '../components/Footer';
 
 export const Inscription = () => {
     // on change le titre de notre page
@@ -60,7 +61,7 @@ export const Inscription = () => {
     return (
         <div>
             <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor"/>
-            <section className="h-100 gradient-form conins-style">
+            <section className="h-100 gradient-form conins-style mt-5">
                 <div className="container py-5 h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-xl-10">
@@ -116,6 +117,7 @@ export const Inscription = () => {
                 </div>
             </section>
             <Theme />
+            <Footer color = "bg-dark"/>
         </div>
     )
 }

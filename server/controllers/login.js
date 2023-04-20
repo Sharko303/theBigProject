@@ -7,6 +7,7 @@ export function identification(request, response) {
   console.log(request.body);
   console.log(request?.body?.username);
   console.log(request?.body?.password);
+  console.log('Connexion en cours');
   let username = request?.body.username;
   let password = request?.body.password;
   let passwordHash;
@@ -62,7 +63,8 @@ export function inscription(request, response) {
   const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
   let passwordHash = bcrypt.hashSync(password, salt); //  Hash le mot de passe avec le sel
   const confirmationUrl = `http://localhost:8080/confirm-email?token=${token}`;
-
+if (username && password && email && passwordHash)
+{
   let newUser = requete.setUser(username, passwordHash, email, salt, confirmationUrl, (error, results) => {
     if (error) {
       console.error(error);
@@ -78,6 +80,9 @@ export function inscription(request, response) {
       }
     }
   });
-
+}else {
+  console.log('Entrez un Pseudo, une adresse mail et un mot de passe !')
+  response.status(401).json({ status: 'error', message: 'Entrez un Pseudo, une adresse mail et un mot de passe !' });
+}
 
 }
