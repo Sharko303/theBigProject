@@ -21,6 +21,7 @@ export const Inscription = () => {
     const [inscription, setInscription] = useState({
         username: "",
         password: "",
+        passwordRetype: "",
         email: "",
     });
 
@@ -41,6 +42,7 @@ export const Inscription = () => {
                 body: JSON.stringify({
                     username: inscription.username,
                     password: inscription.password,
+                    passwordRetype: inscription.passwordRetype,
                     email: inscription.email,
                 }),
             });
@@ -60,7 +62,7 @@ export const Inscription = () => {
 
     return (
         <div>
-            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor"/>
+            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll"/>
             <section className="h-100 gradient-form conins-style mt-5">
                 <div className="container py-5 h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
@@ -87,16 +89,20 @@ export const Inscription = () => {
                                                 <p>Merci d'entrez vos informations :</p>
                                                 
                                                 <div className="form-floating mb-4">
-                                                    <input type="text" name="username" className="form-control" placeholder="Entrer un pseudo" onChange={handleChanges} />
+                                                    <input type="text" name="username" className="form-control" placeholder="Entrer un pseudo" onChange={handleChanges} required/>
                                                     <label className="form-label" htmlFor="pseudo">Pseudo</label>
                                                 </div>
                                                 <div className="form-floating mb-4">
-                                                    <input type="text" name="email" className="form-control" placeholder="Entrer une adresse email" onChange={(handleChanges)} />
+                                                    <input type="email" name="email" className="form-control" placeholder="Entrer une adresse email" onChange={(handleChanges)} required/>
                                                     <label className="form-label" htmlFor="email">Addresse mail</label>
                                                 </div>
                                                 <div className="form-floating mb-4">
-                                                    <input type="password" className="form-control" name="password" placeholder="Entrer un mot de passe" onChange={(handleChanges)} />
+                                                    <input type="password" className="form-control" name="password" placeholder="Entrer un mot de passe" onChange={(handleChanges)} required/>
                                                     <label className="form-label" htmlFor="password" >Mot de passe</label>
+                                                </div>
+                                                <div className="form-floating mb-4">
+                                                    <input type="password" className="form-control" name="passwordRetype" placeholder="Confirmer votre mot de passe" onChange={(handleChanges)} required/>
+                                                    <label className="form-label" htmlFor="passwordRetype" >Re-tapez votre mot de passe</label>
                                                 </div>
                                                 <div className="text-center pt-1 mb-5 pb-1">
                                                     <input className="btn btn-light btn-block fa-lg gradient-custom-2 mb-3 col-12" type="submit" name="submit" value="S'INSCRIRE" />

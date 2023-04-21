@@ -23,7 +23,7 @@ export const Menu = (props) => {
   const scrollColorNav = () => {
     let navbar = document.querySelector('.navbar');
     /* console.log(window.scrollY) */
-    if (window.scrollY >= 100) {
+    if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
       navbar.classList.add('navbar-scrolled');
       navbar.classList.remove('navbar-dark');
       navbar.classList.add('navbar-light');
@@ -51,7 +51,7 @@ export const Menu = (props) => {
   } */
 
   return (
-    <nav id="menu" className={`navbar ${props.color} ${props.scroll} ${props.colornav} navbar-expand-lg fixed-top fixed-top `}>
+    <nav id="menu" className={`navbar ${props.color} ${props.scroll} ${props.colornav} ${props.noscroll} navbar-expand-lg fixed-top fixed-top `}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">E-Sport - Tournois</a>
         <button id="mobile" className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

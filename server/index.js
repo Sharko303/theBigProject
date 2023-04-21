@@ -28,6 +28,8 @@ app.use('/', proxy('http://127.0.0.1:3000', {
   }
 }));
 
+app.get('/confirm-email', loginController.confirmMail);
+
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 
 

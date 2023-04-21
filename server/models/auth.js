@@ -9,7 +9,7 @@ import db from './connexionbdd.js';
                 }
         });
 } */
-export function setUser(username, password, email, salt, confirmUrl, callback) {
+/* export function setUser(username, password, email, salt, confirmUrl, callback) {
         db.query(`INSERT INTO Users (username, password, email, salt, active, url_confirm) VALUES ('${username}', '${password}', '${email}', '${salt}',0 , '${confirmUrl}');`, (error, results, fields) => {
                 if (error) {
                         callback(error, null);
@@ -17,7 +17,7 @@ export function setUser(username, password, email, salt, confirmUrl, callback) {
                         callback(null, results);
                 }
         });
-}
+} */
 /* export function getSalt(username, callback) {
         db.query(`SELECT salt FROM Users WHERE username LIKE '${username}'`, (error, results, fields) => {
           if (error) {
@@ -60,3 +60,16 @@ export async function getUser(username, password) {
         }
         return response;
 }
+
+export async function setUser(username, password, email, salt, confirmUrl) {
+        try {
+          const conn = await db;
+          const query = `INSERT INTO Users (username, password, email, salt, active, url_confirm) VALUES (?, ?, ?, ?, 0, ?);`;
+          const params = [username, password, email, salt, confirmUrl];
+          const result = await conn.query(query, params);
+          return result;
+        } catch (err) {
+          console.error("Erreur lors de l'exécution de la requête INSERT:", err);
+          throw err;
+        }
+      }

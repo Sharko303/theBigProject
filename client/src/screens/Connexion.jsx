@@ -54,7 +54,7 @@ export const Connexion = () => {
     return (
 
         <div>
-            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" />
+            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll"/>
             {token ? (
                 <p>Vous êtes déjà connecté !</p>
             ) : (
@@ -81,11 +81,11 @@ export const Connexion = () => {
                                                 </div>
                                                 <form className="needs-validation" method="POST" onSubmit={handleSubmit}>
                                                     <div className="form-floating mb-4">
-                                                        <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setUsername(e.target.value) }} />
+                                                        <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setUsername(e.target.value) }} required/>
                                                         <label className="form-label" htmlFor="username">Pseudo</label>
                                                     </div>
                                                     <div className="form-floating mb-4">
-                                                        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setPassword(e.target.value) }} />
+                                                        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setPassword(e.target.value) }} required/>
                                                         <label className="form-label" htmlFor="password">Mot de passe</label>
                                                     </div>
                                                     <div className="text-center pt-1 mb-0 pb-1">
