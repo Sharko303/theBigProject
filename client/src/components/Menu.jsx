@@ -27,6 +27,7 @@ export const Menu = (props) => {
       navbar.classList.add('navbar-scrolled');
       navbar.classList.remove('navbar-dark');
       navbar.classList.add('navbar-light');
+      
     } else {
       navbar.classList.remove('navbar-scrolled');
       navbar.classList.add('navbar-dark');
@@ -35,26 +36,24 @@ export const Menu = (props) => {
   }
   window.addEventListener('scroll', scrollColorNav)
 
-/* function focusMenu(event) {
-    event.preventDefault(); // empêche le comportement par défaut du lien
-  
-    // obtenir tous les liens de navigation dans la barre de navigation
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-  
-    // enlever la classe active de tous les liens de navigation
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-    });
-  
-    // ajouter la classe active au lien cliqué
-    event.target.classList.add('active');
-  } */
+  function focusMenu() {
+    let navbar = document.querySelector('.navbar');
+    if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
+      navbar.classList.add('navbar-scrolled');
+      navbar.classList.remove('navbar-dark');
+      navbar.classList.add('navbar-light');
+    } else if(window.scrollY <= 100){
+      navbar.classList.remove('navbar-scrolled');
+      navbar.classList.add('navbar-dark');
+      navbar.classList.remove('navbar-light');
+    }
+  }
 
   return (
     <nav id="menu" className={`navbar ${props.color} ${props.scroll} ${props.colornav} ${props.noscroll} navbar-expand-lg fixed-top fixed-top `}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">E-Sport - Tournois</a>
-        <button id="mobile" className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="mobile" className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" onClick={focusMenu}>
           <span className="navbar-toggler-icon"></span>
         </button>
 
@@ -62,7 +61,7 @@ export const Menu = (props) => {
           {token ? (
             <ul className="navbar-nav ms-auto ">
               <li className="nav-item">
-                <a className="nav-link mx-2 active fw-bolder" aria-current="page"  href="/">Accueil</a>
+                <a className="nav-link mx-2 active fw-bolder" aria-current="page" href="/">Accueil</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link mx-2 fw-bolder" href="/" onClick={handleLogout}>Déconnexion</a>
@@ -80,7 +79,7 @@ export const Menu = (props) => {
                 <Link className="nav-link mx-2 fw-bolder" to="/inscription" >Inscription</Link>
               </li>
               <li id="theme" className="nav-item">
-                
+
               </li>
             </ul>
           )}

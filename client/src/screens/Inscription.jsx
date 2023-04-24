@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Menu } from '../components/Menu';
 import { Theme } from '../components/Theme';
 import {Footer} from '../components/Footer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Inscription = () => {
     // on change le titre de notre page
@@ -51,9 +53,16 @@ export const Inscription = () => {
                 // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
                 //window.location.href = '/home';
                 console.log("inscrit")
+                toast.success('Inscription effectué, un mail de confirmation vous a été envoyez',{
+                    position:toast.POSITION.TOP_RIGHT
+                });
             } else {
                 // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
-                console.log('Erreur:', data.message);
+                console.log('Non inscrit :', data.message);
+
+                toast.error(data.message,{
+                    position:toast.POSITION.TOP_RIGHT
+                });
             }
         } catch (error) {
             console.error(error);
@@ -63,6 +72,7 @@ export const Inscription = () => {
     return (
         <div>
             <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll"/>
+            <ToastContainer />
             <section className="h-100 gradient-form conins-style mt-5">
                 <div className="container py-5 h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">

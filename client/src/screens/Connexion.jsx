@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
-
+import { useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 export const Connexion = () => {
     // on change le titre de notre page
     document.title = "E-Sport | Connexion";
@@ -31,30 +34,46 @@ export const Connexion = () => {
                 // Stocker le token dans le stockage local du navigateur
                 localStorage.setItem('token', data.token);
                 // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
-                window.location.href = '/home';
+                window.location.href = '/home?success=true';
             } else {
                 // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
-                console.log('Erreur:', data.message);
+
+                toast.error(data.message, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
             }
         } catch (error) {
             console.error(error);
         }
     };
-    /*         axios.post('http://localhost:8080/validatePassword', {username: 'test', password: 'test2'})
-                .then(({ data }) => {
-                    console.log(data)
-                })
-                .catch(({ response }) => {
-                    console.log(response)
-                })
-            console.log(event) */
-    //{ token ? (window.location.href = '/home') : (console.log('connecté')) }
+    const location = useLocation();
 
+    let countToast = 0; // on compte les toast pour éviter d'en avoir plus d'1
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const success = queryParams.get('success');
+        const error = queryParams.get('error');
+
+        if (success === 'true' && countToast < 1) {
+            toast.success('Votre compte est activé, veuillez vous connecter.');
+            console.log('toast');
+            console.log(countToast)
+            countToast = 1
+        } else if (error === "already_confirmed" && countToast < 1) {
+            toast.warning('Votre compte est déjà activé.');
+            countToast = 1
+        } else if (error === "true" && countToast < 1) {
+            toast.error('Un problème est survenue lors de l\'activation de votre compte.');
+            countToast = 1
+        }
+    }, [location.search]);
 
     return (
 
         <div>
-            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll"/>
+            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" />
+            <ToastContainer />
             {token ? (
                 <p>Vous êtes déjà connecté !</p>
             ) : (
@@ -81,11 +100,11 @@ export const Connexion = () => {
                                                 </div>
                                                 <form className="needs-validation" method="POST" onSubmit={handleSubmit}>
                                                     <div className="form-floating mb-4">
-                                                        <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setUsername(e.target.value) }} required/>
+                                                        <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setUsername(e.target.value) }} required />
                                                         <label className="form-label" htmlFor="username">Pseudo</label>
                                                     </div>
                                                     <div className="form-floating mb-4">
-                                                        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setPassword(e.target.value) }} required/>
+                                                        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setPassword(e.target.value) }} required />
                                                         <label className="form-label" htmlFor="password">Mot de passe</label>
                                                     </div>
                                                     <div className="text-center pt-1 mb-0 pb-1">
@@ -110,7 +129,7 @@ export const Connexion = () => {
                 </section>
             )}
 
-            <Footer color = "bg-dark"/>
+            <Footer color="bg-dark" />
         </div>
     )
 }
