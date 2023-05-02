@@ -3,7 +3,7 @@ import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
 export const Connexion = () => {
     // on change le titre de notre page
@@ -72,61 +72,59 @@ export const Connexion = () => {
     return (
 
         <div>
-            <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" />
+            {/* <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" /> */}
+            <Menu />
             <ToastContainer />
             {token ? (
                 <p>Vous êtes déjà connecté !</p>
             ) : (
-                <section className="h-100 gradient-form conins-style mt-5">
-                    <div className="container py-5 h-100">
-                        <div className="row d-flex justify-content-center align-items-center h-100">
-                            <div className="col-xl-10">
-                                <div className="card rounded-3 text-black">
-                                    <div className="row g-0">
-                                        <div className="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                            <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+                <section className="h-100 gradient-form conins-style">
+                    <Container className="py-5 h-100">
+                        <Row className="d-flex justify-content-center align-items-center h-100">
+                            <Col xl={10}>
+                                <Card className="rounded-3 text-black">
+                                    <Row className="g-0">
+                                        <Col lg={6} className="d-flex align-items-center gradient-custom-2">
+                                            <div className="text-black px-3 py-4 p-md-5 mx-md-4">
                                                 <h1 className="mb-5 text-center">Bienvenue chers Gamer sur notre page de connexion !</h1>
-                                                <p className="small mb-0">Une fois connecté, vous pourrez participer à des compétitions de haut niveau dans différents jeux vidéo populaires,
-                                                    en affrontant d'autres joueurs du monde entier. Que vous soyez un amateur ou un professionnel,
-                                                    vous trouverez ici des tournois adaptés à votre niveau et à vos préférences.</p>
+                                                <p className="small mb-0">Une fois connecté, vous pourrez participer à des compétitions de haut niveau dans différents jeux vidéo populaires, en affrontant d'autres joueurs du monde entier. Que vous soyez un amateur ou un professionnel, vous trouverez ici des tournois adaptés à votre niveau et à vos préférences.</p>
                                             </div>
-                                        </div>
-                                        <div className="col-lg-6">
-                                            <div className="card-body p-md-5 mx-md-4">
-
+                                        </Col>
+                                        <Col lg={6}>
+                                            <Card.Body className="p-md-5 mx-md-4">
                                                 <div className="text-center">
-
                                                     <h4 className="mt-1 mb-5 pb-1">E-Sport Tournois</h4>
                                                 </div>
-                                                <form className="needs-validation" method="POST" onSubmit={handleSubmit}>
-                                                    <div className="form-floating mb-4">
-                                                        <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setUsername(e.target.value) }} required />
-                                                        <label className="form-label" htmlFor="username">Pseudo</label>
-                                                    </div>
-                                                    <div className="form-floating mb-4">
-                                                        <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setPassword(e.target.value) }} required />
-                                                        <label className="form-label" htmlFor="password">Mot de passe</label>
-                                                    </div>
+                                                <Form className="needs-validation" method="POST" onSubmit={handleSubmit}>
+                                                    <Form.Group className="form-floating mb-4">
+                                                        <Form.Control type="text" name="username" placeholder="Pseudo" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                                                        <Form.Label>Pseudo</Form.Label>
+                                                    </Form.Group>
+                                                    <Form.Group className="form-floating mb-4">
+                                                        <Form.Control type="password" name="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                                        <Form.Label>Mot de passe</Form.Label>
+                                                    </Form.Group>
                                                     <div className="text-center pt-1 mb-0 pb-1">
-                                                        <input type="submit" name="submit" className="btn btn-light btn-block fa-lg gradient-custom-2 mb-3 col-12" value="CONNEXION" />
+                                                        <Button type="submit" name="submit" className="btn btn-light btn-block fa-lg gradient-custom-2 mb-3 col-12">CONNEXION</Button>
                                                     </div>
                                                     <div className="text-center pt-1 mb-5 pb-1">
                                                         <a className="text-muted" href="#!">Mot de passe oublié ?</a>
                                                     </div>
                                                     <div className="d-flex align-items-center justify-content-center pb-4">
-                                                        <p className="mb-0 me-2">Pas encore  inscrit ?</p>
+                                                        <p className="mb-0 me-2">Pas encore inscrit ?</p>
                                                         <a type="button" className="btn btn-outline-dark" href="/inscription">Créer un compte</a>
                                                     </div>
                                                     <a type="text" className='d-flex align-items-center justify-content-center' href="/home">Revenir a l'accueil</a>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                </Form>
+                                            </Card.Body>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Container>
                 </section>
+
             )}
 
             <Footer color="bg-dark" />

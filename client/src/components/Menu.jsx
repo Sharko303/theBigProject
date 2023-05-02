@@ -1,40 +1,16 @@
+import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { BiHome, BiGroup, BiUserCircle} from 'react-icons/bi';
+import React, { useState } from 'react';
+import 'animate.css/animate.min.css';
 //import { Theme } from './Theme';
 
-export const Menu = (props) => {
-
+export const Menu = () => {
   const token = localStorage.getItem('token');
   function handleLogout() {
     localStorage.removeItem('token');
     window.location.href = '/connexion'; // Redirigez l'utilisateur vers la page de connexion après la déconnexion
   }
-  const open = () => {
-    let navbar2 = document.querySelector('.navbar');
-    navbar2.classList.add('navbar-scrolled');
-    navbar2.classList.remove('navbar-dark');
-    navbar2.classList.add('navbar-light');
-  }
-
-  // on attend que notre page s'affiche et quand elle est prête alors on semlect notre class
-  window.addEventListener("load", () => {
-    let mobile = document.getElementById('mobile');
-    mobile.addEventListener('click', open);
-  });
-  const scrollColorNav = () => {
-    let navbar = document.querySelector('.navbar');
-    /* console.log(window.scrollY) */
-    if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
-      navbar.classList.add('navbar-scrolled');
-      navbar.classList.remove('navbar-dark');
-      navbar.classList.add('navbar-light');
-      
-    } else {
-      navbar.classList.remove('navbar-scrolled');
-      navbar.classList.add('navbar-dark');
-      navbar.classList.remove('navbar-light');
-    }
-  }
-  window.addEventListener('scroll', scrollColorNav)
 
   function focusMenu() {
     let navbar = document.querySelector('.navbar');
@@ -42,60 +18,82 @@ export const Menu = (props) => {
       navbar.classList.add('navbar-scrolled');
       navbar.classList.remove('navbar-dark');
       navbar.classList.add('navbar-light');
-    } else if(window.scrollY <= 100){
+    } else if (window.scrollY <= 100) {
       navbar.classList.remove('navbar-scrolled');
       navbar.classList.add('navbar-dark');
       navbar.classList.remove('navbar-light');
     }
   }
+  const [isActive, setIsActive] = useState(false);
+
+  const handleMouseEnter = () => {
+      setIsActive(true);
+  }
+  const handleMouseLeave = () => {
+    setIsActive(false);
+  };
 
   return (
-    <nav id="menu" className={`navbar ${props.color} ${props.scroll} ${props.colornav} ${props.noscroll} navbar-expand-lg fixed-top fixed-top `}>
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/">E-Sport - Tournois</a>
-        <button id="mobile" className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" onClick={focusMenu}>
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className=" collapse navbar-collapse transparent" id="navbarNav">
+    <Navbar id="menu" expand="lg" className="fixed-top" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Container fluid>
+        <Navbar.Brand className="sidebar-start" href="/">
+          E-S
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarNav" id="mobile"/>
+        <Navbar.Collapse id="navbarNav">
           {token ? (
-            <ul className="navbar-nav ms-auto ">
-              <li className="nav-item">
-                <a className="nav-link mx-2 active fw-bolder" aria-current="page" href="/">Accueil</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link mx-2 fw-bolder" href="/" onClick={handleLogout}>Déconnexion</a>
-              </li>
-            </ul>
+            <Nav className="mx-auto d-flex align-items-center justify-content-center">
+              <Nav.Link href="/" className="active fw-bolder">
+                <BiHome className="icon-color" />
+              </Nav.Link>
+              <Nav.Link href="/creertournois" className="fw-bolder">
+                Creer un tournois
+              </Nav.Link>
+              <Nav.Link href="/" onClick={handleLogout} className="fw-bolder">
+                Déconnexion
+              </Nav.Link>
+            </Nav>
           ) : (
-            <ul className="navbar-nav ms-auto ">
-              <li className="nav-item">
-                <Link id="accueil" className="nav-link mx-2 fw-bolder" aria-current="page" to="/" >Accueil</Link>
-              </li>
-              <li className="nav-item">
-                <a id="connexion" className="nav-link mx-2 fw-bolder" href="/connexion" >Connexion</a>
-              </li>
-              <li id="inscription" className="nav-item">
-                <Link className="nav-link mx-2 fw-bolder" to="/inscription" >Inscription</Link>
-              </li>
-              <li id="theme" className="nav-item">
-
-              </li>
-            </ul>
+            <Nav className="mt-5 d-flex align-items-center justify-content-center">
+              <Nav.Link
+                as={Link}
+                to="/"
+                className={`mx-3 fw-bolder sidebar-btn sidebar-middle ${isActive ? 'active' : ''}`}
+              >
+                <BiHome className="icon-color" />
+                {isActive && (
+                  <span className='mx-2 text-black fade show animate__animated animate__fadeInLeft' >
+                    Accueil
+                  </span>
+                )}
+              </Nav.Link>
+              <Nav.Item className="mx-auto sidebar-end">
+                <Nav.Link href="/connexion" className="fw-bolder">
+                  <Button className="btn2-color" style={{ position: 'relative', overflow: 'hidden' }}>
+                    <BiUserCircle className="icon-color" />
+                    {isActive && (
+                      <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                        Connexion
+                      </span>
+                    )}
+                  </Button>
+                </Nav.Link>
+                <Nav.Link as={Link} to="/inscription" className="fw-bolder">
+                <Button className="btn-color">
+                    <BiGroup />
+                    {isActive && (
+                      <span className='text btn-text fade show animate__animated animate__fadeInLeft'>
+                      Inscription
+                    </span>
+                    )}
+                  </Button>
+                </Nav.Link>
+                <Nav.Item id="theme"></Nav.Item>
+              </Nav.Item>
+            </Nav>
           )}
-          <ul className="navbar-nav ms-auto d-none d-lg-inline-flex">
-            <li className="nav-item mx-2">
-              <a className="nav-link text-dark h5" href="" target="blank"><i className="bi-envelope"></i></a>
-            </li>
-            <li className="nav-item mx-2">
-              <a className="nav-link text-dark h5" href="" target="blank"><i className="fab fa-twitter"></i></a>
-            </li>
-            <li className="nav-item mx-2">
-              <a className="nav-link text-dark h5" href="" target="blank"><i className="fab fa-facebook-square"></i></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  );
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  )
 }

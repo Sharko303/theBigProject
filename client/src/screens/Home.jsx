@@ -1,11 +1,12 @@
 import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
-import Img from '../images/home.jpg'
+import Img from '../images/fond-violet.jpg'
 import { useLocation } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Container, Row, Col, Button, Carousel, Card } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiGroup, BiUserCircle } from 'react-icons/bi';
 
 
 export const Home = () => {
@@ -31,9 +32,9 @@ export const Home = () => {
     return (
         <div>
             <header>
-                <Menu color="navbar-dark" />
+                <Menu />
             </header>
-            <section>
+            <div className='custom-background-home-body body-space'>
                 <div className="hero-section"
                     style={{
                         paddingTop: '50px',
@@ -43,52 +44,124 @@ export const Home = () => {
                         height: '100vh',
                         backgroundAttachment: 'fixed',
                     }}>
-                    <div className="container mt-5">
-                        <h1 className="display-4 text-white text-center mb-5 fw-bold">Organisez vos tournois de jeux vidéo</h1>
-                        <p className="lead text-white mt-5 text-center fw-bold">Avec notre plateforme en ligne, organisez facilement des tournois pour vos jeux préférés, comme Rocket League et Valorant.</p>
-                        <p className="lead text-white mt-5 text-center fw-bold">Rejoignez-nous dès maintenant pour vivre des moments de jeu intenses et relever de nouveaux défis avec des joueurs du monde entier ! Cliquez sur le bouton "REJOINDRE" ci-dessous pour accéder à votre compte ou vous inscrire sur notre plateforme.</p>
-                        <div className="d-flex justify-content-center">
-                            <Link to="/connexion" id='bouton' aria-label="REJOINDRE" className="btn btn-primary btn-lg mt-5 mb-5">REJOINDRE !</Link>
-                        </div>
-                    </div>
+
+                    <Row >
+                        <Col lg={8} md={12}>
+                            <section className='content-home-and-mobile'>
+                                <Row>
+                                    <Col lg={4} md={12}>
+                                        <Container className="text-center" >
+                                            <Card className='w-100 title-background bg-warning'>
+                                                <Card.Title><h1>Test</h1></Card.Title>
+                                            </Card>
+                                        </Container>
+                                    </Col>
+                                    <Col lg={12}>
+                                        <div className='tournoisbanner-content mt-5 ml-5 text-white'>
+                                            <h1>Tournois E-Sport</h1>
+                                            <p className='mt-4'>E-Sport est une plateforme en ligne pour les joueurs de jeux vidéo qui cherchent à participer à des tournois E-Sport compétitifs. Les utilisateurs peuvent créer un compte gratuit, rejoindre des équipes, et participer à des tournois de jeux vidéo organisés par la plateforme.</p>
+
+                                            <p>Le site propose une variété de tournois dans différents genres de jeux, tels que les jeux de combat, les jeux de stratégie en temps réel, les jeux de sport électroniques et bien d'autres. Les joueurs peuvent également créer leur propre tournoi, inviter leurs amis et gérer les règles du jeu.</p>
+
+
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </section>
+                        </Col>
+                        <Col md='4'>
+                            <section className='home-right'>
+                                <Row>
+                                    <Col xs={6}>
+                                        <Button href="/connexion" className='btn btn-lg w-100 btn-warning content-home-no-mobile'><BiUserCircle className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                            Connexion
+                                        </span></Button>
+                                    </Col>
+                                    <Col xs={6}>
+                                        <Button href="/inscription" className='btn btn-lg w-100 btn-light content-home-no-mobile'><BiGroup /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                            Inscription
+                                        </span></Button>
+                                    </Col>
+                                    <Col lg={{ span: 8, offset: 2 }} md={12}>
+                                        <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                                    </Col>
+                                </Row>
+
+                            </section>
+                        </Col>
+                    </Row >
                 </div>
-            </section>
-            <div className="container my-5">
-                <h2 className="text-center mb-5">Notre plateforme de tournois de jeux vidéo</h2>
-                <div className="row">
-                    <section>
-                        <div className="col-md-6">
+                <Container className="my-5 text-white">
+                    <h2 className="text-center mb-5">Notre plateforme de tournois de jeux vidéo</h2>
+                    <Row>
+                        <Col md={6}>
                             <h3>Des tournois personnalisables</h3>
                             <p>Nous proposons des tournois personnalisables pour répondre à tous vos besoins. Choisissez le format du tournoi, les règles, les prix et bien plus encore.</p>
-                        </div>
-                    </section>
-                    <section>
-                        <div className="col-md-6">
+                        </Col>
+                        <Col md={6}>
                             <h3>Des prix pour les gagnants</h3>
                             <p>Offrez des prix aux gagnants de vos tournois pour les encourager à continuer à jouer et à participer à vos événements futurs.</p>
-                        </div>
-                    </section>
-                </div>
-                <div className="row mt-5">
-                    <section>
-                        <div className="col-md-6">
+                        </Col>
+                    </Row>
+                    <Row className="mt-5">
+                        <Col md={6}>
                             <h3>Une expérience de jeu fluide</h3>
                             <p>Nous nous engageons à offrir une expérience de jeu fluide et équitable à tous les joueurs participants à nos tournois. Nous utilisons les dernières technologies pour garantir des temps de latence minimaux et une connexion stable.</p>
-                        </div>
-                    </section>
-                    <section>
-                        <div className="col-md-6">
+                        </Col>
+                        <Col md={6}>
                             <h3>Des jeux populaires</h3>
                             <p>Participez à des tournois pour certains des jeux les plus populaires, comme Rocket League et Valorant. Nous ajoutons régulièrement de nouveaux jeux à notre plateforme pour répondre aux demandes de notre communauté de joueurs.</p>
-                        </div>
-                    </section>
-                </div>
-            </div>
-            <ToastContainer />
-            <footer>
-                <Footer color="bg-light" />
-            </footer>
+                        </Col>
+                    </Row>
+                </Container>
+                <Container className='mt-5'>
+                    <Carousel>
+                        <Carousel.Item>
+                            <img
+                                //className="d-block w-100"
+                                src="../images/valorant.webp"
+                                alt="Valorant"
 
-        </div >
+                            />
+                            <Carousel.Caption>
+                                <h3>First slide label</h3>
+                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src="holder.js/800x400?text=Second slide&bg=282c34"
+                                alt="Second slide"
+                            />
+
+                            <Carousel.Caption>
+                                <h3>Second slide label</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src="holder.js/800x400?text=Third slide&bg=20232a"
+                                alt="Third slide"
+                            />
+
+                            <Carousel.Caption>
+                                <h3>Third slide label</h3>
+                                <p>
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                                </p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                    </Carousel>
+                </Container>
+                <ToastContainer />
+                <footer>
+                    <Footer color="bg-light" />
+                </footer>
+
+            </div >
+        </div>
     )
 }

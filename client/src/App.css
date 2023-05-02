@@ -32,58 +32,286 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
-.navbar{
-  transition:all 0.5s;
+
+.navbar {
+  transition: all 0.5s;
 }
-.navbar-scrolled
-{
+
+.navbar-scrolled {
   background-color: white;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
+
 /* on fais le style inscription / connexion */
 
 .gradient-custom-2 {
   background: #fccb90;
   background: -webkit-linear-gradient(to right, #b8b8b8, #707070, #303030, #383838);
-  background: linear-gradient(to right, #cccccc, #777777, #4e4e4e, #252525);
-  color: white;;
-  }
-  
-  /*@media (min-width: 768px) {
-  .gradient-form {
-  height: 100vh !important;
-  }
-  }
-  
-  @media (min-width: 769px) {
-  .gradient-custom-2 {
-  border-top-right-radius: .3rem;
-  border-bottom-right-radius: .3rem;
-  }
-  }*/
+  background: linear-gradient(to right, rgb(255, 217, 0), rgb(255, 217, 0), rgb(255, 187, 0), rgb(231, 150, 57));
+  color: black;
+  ;
+}
 
-  /* On ajoute un background a notre connexion et inscription */
-  .conins-style
-  {
-    background-color: rgb(235, 235, 235);
-  }
+/* On ajoute un background a notre connexion et inscription */
+.conins-style {
+  background-image: url('images/fond-violet.jpg');
+  background-Repeat: "no-repeat";
+  background-Size: "cover";
+  height: '100vh';
+  background-Attachment: 'fixed';
+}
+
 /* On change la couleur du menu dans les page connexion et inscription (mode sombre ?)*/
 
-  .navcolor{
-    background-color: #212529;
-  }
+.navcolor {
+  background-color: #212529;
+}
 
 /*On change les couleurs des bordure des inputs par default*/
 
-  .form-control:focus {
-    border-color: #383838 !important;
-    box-shadow: 0 0 5px #383838 !important;
+.form-control:focus {
+  border-color: #383838 !important;
+  box-shadow: 0 0 5px #383838 !important;
+}
+
+/* darkmode */
+
+.custom-background-home-body {
+  background-color: #212529;
+}
+
+
+
+
+
+/* ****************************************
+*******************************************
+****************MENU HORIZONTAL************
+*******************************************
+*******************************************
+ */
+
+@media screen and (min-width: 992px) {
+
+  .navbar .container-fluid,
+  .navbar-expand-lg .navbar-collapse,
+  .navbar-expand-lg .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  /* darkmode */
+  .navbar {
+    width: 9.5vh;
+    height: 100vh;
+    align-items: flex-start;
+    background: linear-gradient(rgb(255, 217, 0), rgb(231, 150, 57));
+  }
 
-  
+  .navbar-brand {
+    margin-left: 0.5rem;
+  }
+
+  /* On reduit la page taille du body des pages pour prendre en compte de notre menu */
+  .body-space {
+    padding-left: 9.5vh;
+  }
+
+  .sidebar-btn {
+    text-transform: none;
+    display: block;
+    width: auto;
+    margin: 15px 10px;
+    padding: 0;
+    border-radius: 15px;
+    color: var(--color-2);
+    transition: all ease 0.3s;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+  }
+
+  .sidebar-start {
+    margin-top: 1rem;
+  }
+
+  .sidebar-middle {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .sidebar-end {
+    position: absolute;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    margin-bottom: 5vh;
+  }
+
+  .btn2-color {
+    background-color: rgb(255, 205, 164);
+    border: none;
+  }
+
+  .btn-color {
+    background-color: rgb(0, 0, 0);
+    border: none;
+    color: rgb(231, 150, 57);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn2-color:hover {
+    background-color: rgb(255, 205, 164);
+    border: none;
+  }
+
+  .btn-color:hover {
+    display: inline-block;
+    background-color: rgb(0, 0, 0);
+    border: none;
+    color: rgb(231, 150, 57);
+
+  }
+
+  .btn-text {
+    margin-left: 5px;
+    /* Espace entre l'icône et le texte */
+    float: right;
+    /* Flotter le texte à gauche */
+  }
+
+  .icon-color {
+    color: #000000;
+  }
+
+  /*test */
+  .navbar-nav .nav-link .btn {
+    width: auto;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .navbar-nav.expanded .nav-link .btn {
+    width: 200px;
+    /* ajustez cette valeur selon vos besoins */
+  }
+
+  /*fin test */
+  /* au survol de notre menu2 */
+  /* Affiche les textes seulement en survol */
+  .navbar:hover {
+    width: 20vh !important;
+  }
+
+  #menu .nav {
+    display: none;
+    /* Masque les éléments de la nav */
+  }
+
+  #menu .nav.active {
+    display: flex;
+    /* Affiche les éléments de la nav actif */
+  }
+
+  #menu .nav.active span {
+    display: inline-block;
+    /* Affiche les éléments span à côté des icônes */
+    margin-left: 5px;
+    /* Ajoute une marge à gauche pour séparer les icônes et les textes */
+  }
+
+  #menu .nav span {
+    display: none;
+  }
+
+  #menu .nav-link .icon-label {
+    display: none;
+  }
+
+  #menu .nav-link:hover .icon-label {
+    display: inline;
+  }
+
+  /* Animation d'agrandissement */
+  #menu .nav-link {
+    transition: transform 0.2s ease-out;
+  }
+
+  #menu:hover .nav-link {
+    transform: scale(1.1);
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link span {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  #sidebar .sidebar-link .text {
+    display: inline-flex;
+    justify-content: space-between;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity ease 0.6s;
+  }
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/**********FIN MENU HORIZONTAL****************/
+
+
+/*********************************************
+**********************************************
+*******DEBUT CONTENU POUR PC SEULEMENT********
+**********************************************
+**********************************************/
+@media screen and (min-width: 992px) {
+
+  /* on vien changer la couleur de notre titre h1 de notre pages */
+  .hero-section {
+    padding-left: 2vh;
+    padding-right: 3vh;
+  }
+}
+
+/* on vien enlever les boutons qui doivent apparaitre que sur pc */
+@media (max-width: 992px) {
+  .content-home-no-mobile {
+    display: none;
+  }
+}
+
+.tournoisbanner-content {
+  padding: 5%;
+  position: relative;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(90deg, black 0%, rgba(0, 0, 0, 0.185) 100%), var(--settings-background);
+  transition: all ease 0.3s;
+}

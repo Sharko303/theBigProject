@@ -1,13 +1,15 @@
 :root {
-  --body_background:white;
-  --body_color:black;
-  --link_color:navy;
+  --settings-background: url('images/valorant.webp');
+  --body_background: white;
+  --body_color: black;
+  --link_color: navy;
+  --color-2: #F4962A;
 }
 
 [data-theme="dark"] {
-  --body_background:#383838;
-  --body_color:white;
-  --link_color:cyan;
+  --body_background: #383838;
+  --body_color: white;
+  --link_color: cyan;
 }
 
 body {
