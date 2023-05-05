@@ -26,7 +26,7 @@ export async function identification(request, response) {
       return;
     }
 
-    const token = jwt.sign({ username }, 'secret');
+    const token = await requete.getToken(username);
     response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });
   } catch (err) {
     response.status(401).json({ status: 'error', message: err.message });
@@ -86,7 +86,7 @@ export async function confirmMail(req, res) {
   let tokenUser
   try {
     //await requete.getToken(token)
-    const userInfo = await requete.getToken(token)
+    const userInfo = await requete.getUserInfo(token)
     tokenUser = userInfo.token;
     email = userInfo.email;
     if (!tokenUser || userInfo.active == 1) {

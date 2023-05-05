@@ -97,7 +97,7 @@ export async function alreadyUsed(username, email) {
         }
         return result
 }
-export async function getToken(token) {
+export async function getUserInfo(token) {
         const conn = await db;
         // Faire la requête SQL pour récupérer le token dans la base de données
         const sql = "SELECT * FROM Users WHERE token = ?";
@@ -128,5 +128,19 @@ export async function setAccountActive(token) {
         } catch (error) {
                 console.error(error);
                 throw error;
+        }
+}
+export async function getToken(username) {
+        try {
+                const conn = await db;
+                const rows = await conn.query(`SELECT token FROM Users WHERE username LIKE '${username}'`);
+                if (rows.length > 0) {
+                        return rows[0].token;
+                } else {
+                        throw new Error("Aucun utilisateur trouvé avec ce nom d'utilisateur.");
+                }
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
         }
 }

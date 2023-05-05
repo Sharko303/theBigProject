@@ -1,7 +1,8 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BiHome, BiGroup, BiUserCircle} from 'react-icons/bi';
+import { BiHome, BiGroup, BiUserCircle } from 'react-icons/bi';
 import React, { useState } from 'react';
+import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
 //import { Theme } from './Theme';
 
@@ -27,19 +28,48 @@ export const Menu = () => {
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseEnter = () => {
-      setIsActive(true);
+    setIsActive(true);
   }
   const handleMouseLeave = () => {
     setIsActive(false);
   };
 
+  const scrollColorNav = () => {
+    let navbar = document.querySelector('.navbar');
+    /* console.log(window.scrollY) */
+    if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
+      navbar.classList.add('navbar-scrolled');
+      navbar.classList.remove('navbar-dark');
+
+    } else {
+      navbar.classList.remove('navbar-scrolled');
+      navbar.classList.add('navbar-dark');
+    }
+  }
+  window.addEventListener('scroll', scrollColorNav)
+  const open = () => {
+    let navbar2 = document.querySelector('.navbar');
+    navbar2.classList.add('navbar-scrolled');
+    navbar2.classList.remove('navbar-dark');
+  }
+
+  // on attend que notre page s'affiche et quand elle est prête alors on semlect notre class
+  window.addEventListener("load", () => {
+    let mobile = document.getElementById('mobile');
+    mobile.addEventListener('click', open);
+  });
+
   return (
     <Navbar id="menu" expand="lg" className="fixed-top" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Container fluid>
         <Navbar.Brand className="sidebar-start" href="/">
-          E-S
+          <img
+            className="d-block w-100 mx-1"
+            src={Flavicon}
+            alt="Valorant"
+          />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarNav" id="mobile"/>
+        <Navbar.Toggle aria-controls="navbarNav" id="mobile" />
         <Navbar.Collapse id="navbarNav">
           {token ? (
             <Nav className="mx-auto d-flex align-items-center justify-content-center">
@@ -79,12 +109,12 @@ export const Menu = () => {
                   </Button>
                 </Nav.Link>
                 <Nav.Link as={Link} to="/inscription" className="fw-bolder">
-                <Button className="btn-color">
+                  <Button className="btn-color">
                     <BiGroup />
                     {isActive && (
                       <span className='text btn-text fade show animate__animated animate__fadeInLeft'>
-                      Inscription
-                    </span>
+                        Inscription
+                      </span>
                     )}
                   </Button>
                 </Nav.Link>

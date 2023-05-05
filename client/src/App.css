@@ -43,7 +43,7 @@
 }
 
 .navbar-scrolled {
-  background-color: white;
+  background-color: rgb(255, 187, 0);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -119,6 +119,7 @@
   /* On reduit la page taille du body des pages pour prendre en compte de notre menu */
   .body-space {
     padding-left: 9.5vh;
+    padding-right: 0;
   }
 
   .sidebar-btn {
@@ -269,7 +270,7 @@
     opacity: 0;
     transition: opacity ease 0.6s;
   }
-}
+} 
 
 .navbar .navbar-nav .nav-link {
   color: #fff;
@@ -298,11 +299,16 @@
   }
 }
 
-/* on vien enlever les boutons qui doivent apparaitre que sur pc */
+/* Version mobile < 992px */
 @media (max-width: 992px) {
   .content-home-no-mobile {
     display: none;
   }
+  /* Pour version mobile on évite les padding automatique de notre <Container /> */
+.body-space {
+  padding-left: 0;
+  padding-right: 0;
+}
 }
 
 .tournoisbanner-content {
@@ -314,4 +320,9 @@
   background-repeat: no-repeat;
   background-image: linear-gradient(90deg, black 0%, rgba(0, 0, 0, 0.185) 100%), var(--settings-background);
   transition: all ease 0.3s;
+}
+
+.caroussel-color
+{
+  color: rgb(231, 205, 57);
 }
