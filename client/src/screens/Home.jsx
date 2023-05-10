@@ -87,7 +87,7 @@ export const Home = () => {
 
                                 {token ? (
                                     <Row>
-                                        <Col xs={6}>
+                                        <Col>
                                             <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
                                                 Listes tournois
                                             </span></Button>
@@ -100,7 +100,7 @@ export const Home = () => {
                                         </Col>
 
                                         <Col lg={{ span: 8, offset: 2 }} md={12}>
-                                            <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                                        <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameBorder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                                         </Col>
                                     </Row>
                                 ) : (
@@ -116,7 +116,7 @@ export const Home = () => {
                                             </span></Button>
                                         </Col>
                                         <Col lg={{ span: 8, offset: 2 }} md={12}>
-                                            <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                                        <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameBorder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                                         </Col>
                                     </Row>
                                 )}
@@ -130,7 +130,7 @@ export const Home = () => {
 
                 </div >
 
-                <Container className="my-5 text-white">
+                <Container className="my-5 text-dark">
                     <h2 className="text-center mb-5">Notre plateforme de tournois de jeux vidéo</h2>
                     <Row>
                         <Col md={6}>
@@ -154,7 +154,7 @@ export const Home = () => {
                 </Container>
 
                 <footer>
-                    <Footer color="bg-light" />
+                    <Footer color="footer-violet" color2="footer-violet2"/>
                 </footer>
 
 

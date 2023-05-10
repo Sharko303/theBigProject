@@ -82,7 +82,7 @@
 /* darkmode */
 
 .custom-background-home-body {
-  background-color: #212529;
+  background-color: rgb(231, 185, 57);
 }
 
 
@@ -326,3 +326,24 @@
 {
   color: rgb(231, 205, 57);
 }
+
+.footer-violet, .fond-violet {
+  /*On met notre footer en bg-color violet et color jaune*/
+  color :rgb(231, 150, 57);
+  background-color:#370480;
+}
+.footer-violet a, .text-yellow{
+  color :rgb(231, 205, 57);
+}
+
+.footer-violet2 {
+  /*On met le bas de notre footer en bg-color violet foncé*/
+
+  background-color:#2c0466;
+}
+
+.icon-footer, .footer-violet svg{
+  color:#2c0466;
+  background-color: rgb(231, 150, 57);
+}
+
