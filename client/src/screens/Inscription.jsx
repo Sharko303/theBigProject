@@ -144,7 +144,7 @@ export const Inscription = () => {
                 </section>
 
 
-                <Footer color="bg-dark" />
+                <Footer color="footer-violet" color2="footer-violet2"/>
             </div>
         </div>
     )

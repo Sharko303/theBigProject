@@ -1,7 +1,7 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
 //import { Theme } from './Theme';
@@ -36,7 +36,6 @@ export const Menu = () => {
 
   const scrollColorNav = () => {
     let navbar = document.querySelector('.navbar');
-    /* console.log(window.scrollY) */
     if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
       navbar.classList.add('navbar-scrolled');
       navbar.classList.remove('navbar-dark');
@@ -59,6 +58,25 @@ export const Menu = () => {
     mobile.addEventListener('click', open);
   });
 
+  // Pour notre menu mobile ou non on adapte les classes a utilisé :
+
+
+const MyNavbar = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const navbarClass = isMobile ? "" : "d-flex";
+}
   return (
     <Navbar id="menu" expand="lg" className="fixed-top" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Container fluid>
@@ -70,9 +88,9 @@ export const Menu = () => {
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" id="mobile" />
-        <Navbar.Collapse id="navbarNav">
+        <Navbar.Collapse className='w-100 align-items-center justify-content-center' id="navbarNav">
           {token ? (
-             <Nav className="mt-5 d-flex align-items-center justify-content-center">
+             <Nav className="mt-5">
               <Nav.Link
                 as={Link}
                 to="/"

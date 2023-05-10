@@ -107,7 +107,7 @@ export const CreerTournois = () => {
                 </div>
             </section>
             <ToastContainer />
-            <Footer />
+            <Footer color="footer-violet" color2="footer-violet2"/>
         </div>
     );
 };
