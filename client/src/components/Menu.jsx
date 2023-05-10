@@ -1,6 +1,6 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BiHome, BiGroup, BiUserCircle } from 'react-icons/bi';
+import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
 import React, { useState } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
@@ -72,16 +72,39 @@ export const Menu = () => {
         <Navbar.Toggle aria-controls="navbarNav" id="mobile" />
         <Navbar.Collapse id="navbarNav">
           {token ? (
-            <Nav className="mx-auto d-flex align-items-center justify-content-center">
-              <Nav.Link href="/" className="active fw-bolder">
+             <Nav className="mt-5 d-flex align-items-center justify-content-center">
+              <Nav.Link
+                as={Link}
+                to="/"
+                className={`mx-3 fw-bolder sidebar-btn sidebar-middle ${isActive ? 'active' : ''}`}
+              >
                 <BiHome className="icon-color" />
+                {isActive && (
+                  <span className='mx-2 text-black fade show animate__animated animate__fadeInLeft' >
+                    Accueil
+                  </span>
+                )}
               </Nav.Link>
-              <Nav.Link href="/creertournois" className="fw-bolder">
-                Creer un tournois
+              <Nav.Link href="/creertournois" className={`mx-3 fw-bolder mt-5 sidebar-btn sidebar-middle ${isActive ? 'active' : ''}`}>
+                <BiJoystick className="icon-color" />
+                {isActive && (
+                  <span className='mx-2 text-black fade show animate__animated animate__fadeInLeft' >
+                    Tournois
+                  </span>
+                )}
               </Nav.Link>
-              <Nav.Link href="/" onClick={handleLogout} className="fw-bolder">
-                Déconnexion
-              </Nav.Link>
+              <Nav.Item className="mx-auto sidebar-end">
+                <Nav.Link href="/connexion" className="fw-bolder">
+                  <Button className="btn-danger" style={{ position: 'relative', overflow: 'hidden' }}>
+                    <BiLogOut className="icon-color" />
+                    {isActive && (
+                      <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                        Déconnexion
+                      </span>
+                    )}
+                  </Button>
+                </Nav.Link>
+              </Nav.Item>
             </Nav>
           ) : (
             <Nav className="mt-5 d-flex align-items-center justify-content-center">

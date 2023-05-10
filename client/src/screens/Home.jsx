@@ -7,16 +7,25 @@ import React, { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
-import { BiGroup, BiUserCircle } from 'react-icons/bi';
+import { BiGroup, BiUserCircle, BiLogOut, BiPlus,BiJoystick } from 'react-icons/bi';
 
 
 export const Home = () => {
     // on change le titre de notre page
     document.title = "E-Sport | Accueil";
+
     // on récupère les paramètres de notre url
     const location = useLocation();
 
+    // on récupère le token
+    const token = localStorage.getItem('token');
+
     let countToast = 0; // on compte les toast pour éviter d'en avoir plus d'1
+
+    function handleLogout() { // on déconnecte notre utilisateur
+        localStorage.removeItem('token');
+        window.location.href = '/connexion'; // Redirigez l'utilisateur vers la page de connexion après la déconnexion
+    }
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -50,14 +59,14 @@ export const Home = () => {
                             <section className='content-home-and-mobile'>
                                 <Row>
                                     <Col lg={12} md={4}>
-                                         <Container className="text-center" >
+                                        <Container className="text-center" >
                                             <Card className='bg-warning'>
                                                 <Card.Title><h1>Test</h1></Card.Title>
                                             </Card>
-                                        </Container> 
-                                        
+                                        </Container>
+
                                     </Col>
-                                     <Col lg={12}>
+                                    <Col lg={12}>
                                         <div className='tournoisbanner-content mt-5 ml-5 mb-5 text-white'>
                                             <h1>Tournois E-Sport</h1>
                                             <p className='mt-4'>E-Sport est une plateforme en ligne pour les joueurs de jeux vidéo qui cherchent à participer à des tournois E-Sport compétitifs. Les utilisateurs peuvent créer un compte gratuit, rejoindre des équipes, et participer à des tournois de jeux vidéo organisés par la plateforme.</p>
@@ -66,35 +75,59 @@ export const Home = () => {
 
 
                                         </div>
-                                    </Col> 
-                                     <Col lg={6} md={12}>
+                                    </Col>
+                                    <Col lg={6} md={12}>
                                         <RocketValoCaroussel />
-                                    </Col> 
+                                    </Col>
                                 </Row>
                             </section>
                         </Col>
                         <Col lg='4' md='4'>
                             <section className='home-right content-home-no-mobile'>
-                                <Row>
-                                    <Col xs={6}>
-                                        <Button href="/connexion" className='btn btn-lg w-100 btn-warning content-home-no-mobile'><BiUserCircle className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
-                                            Connexion
-                                        </span></Button>
-                                    </Col>
-                                    <Col xs={6}>
-                                        <Button href="/inscription" className='btn btn-lg w-100 btn-light content-home-no-mobile'><BiGroup /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
-                                            Inscription
-                                        </span></Button>
-                                    </Col>
-                                     <Col lg={{ span: 8, offset: 2 }} md={12}>
-                                        <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-                                    </Col>
-                                </Row>
+
+                                {token ? (
+                                    <Row>
+                                        <Col xs={6}>
+                                            <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                Listes tournois
+                                            </span></Button>
+                                        </Col>
+
+                                        <Col>
+                                            <Button className='btn btn-lg w-100 btn-danger content-home-no-mobile text-dark' href="/" onClick={handleLogout}><BiLogOut /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                Déconnexion
+                                            </span></Button>
+                                        </Col>
+
+                                        <Col lg={{ span: 8, offset: 2 }} md={12}>
+                                            <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                                        </Col>
+                                    </Row>
+                                ) : (
+                                    <Row>
+                                        <Col xs={6}>
+                                            <Button href="/connexion" className='btn btn-lg w-100 btn-warning content-home-no-mobile'><BiUserCircle className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                Connexion
+                                            </span></Button>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Button href="/inscription" className='btn btn-lg w-100 btn-light content-home-no-mobile'><BiGroup /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                Inscription
+                                            </span></Button>
+                                        </Col>
+                                        <Col lg={{ span: 8, offset: 2 }} md={12}>
+                                            <iframe className='mt-5 ml-5 w-100' src="https://discord.com/widget?id=1101437640525488169&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                                        </Col>
+                                    </Row>
+                                )}
+
+
+
 
                             </section>
                         </Col>
                     </Row>
-                    
+
                 </div >
 
                 <Container className="my-5 text-white">
