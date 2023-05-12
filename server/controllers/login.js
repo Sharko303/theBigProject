@@ -20,7 +20,7 @@ export async function identification(request, response) {
     }
 
     const passwordHash = bcrypt.hashSync(password, salt);
-    const user = await requete.getUser(username, passwordHash);
+    const user = await requete.verifUser(username, passwordHash);
     if (!user) {
       response.status(401).json({ status: 'error', message: 'Aucun compte trouvé avec ce nom d\'utilisateur et ce mot de passe' });
       return;

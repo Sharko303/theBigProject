@@ -119,8 +119,8 @@
   /* On reduit la page taille du body des pages pour prendre en compte de notre menu */
   .body-space {
     padding-left: 91px;
-    /* padding-right: 0; */
-    
+    padding-right: 0;
+    overflow: hidden;
   }
 
   .sidebar-btn {
@@ -306,9 +306,10 @@
     display: none;
   }
   /* Pour version mobile on évite les padding automatique de notre <Container /> */
-.body-space {
-  
-}
+  .body-space {
+    padding: 0;
+    overflow: hidden;
+  }
 
 }
 

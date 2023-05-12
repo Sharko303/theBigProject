@@ -4,25 +4,69 @@ import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { DatePicker } from "react-responsive-datepicker";
+import {GameSelect } from '../components/GameSelect';
 export const CreerTournois = () => {
-    const [title, setTitle] = useState("");
-    const [participants, setParticipants] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [nomTournois, setNomTournois] = useState('');
+    const [dateTournoisStart, setDateTournoisStart] = useState(new Date());
+    const [dateTournoisEnd, setDateTournoisEnd] = useState(new Date());
+    const [heureTournois, setHeureTournois] = useState('');
+    const [isOpenStart, setIsOpenStart] = useState(false);
+    const [isOpenEnd, setIsOpenEnd] = useState(false);
+    const [selectedGame, setSelectedGame] = useState(""); // Ajouter un état pour la valeur sélectionnée
+    //const today = new Date();
+    // const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Pour limiter la date 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const token = localStorage.getItem('token');
 
-        const tournamentData = {
-            title,
-            participants,
-            startDate,
-            endDate,
-        };
 
-        /* try {
-            const response = await fetch("http://localhost:8080/ws/validatePassword", {
+    const handleInputClickStart = () => {
+        setIsOpenStart(true);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        setDateTournoisStart(today);
+    };
+    
+    const handleDatePickerChangeStart = (date) => {
+        if (!date) { // check if date is null or undefined
+            setIsOpenStart(false);
+            setDateTournoisStart('');
+        } else {
+            setIsOpenStart(false);
+            const formattedDate = date.toLocaleDateString('fr-CA');
+            setDateTournoisStart(formattedDate);
+        }
+    };
+    
+    const handleInputClickEnd = () => {
+        setIsOpenEnd(true);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        setDateTournoisEnd(today);
+    };
+    
+    const handleDatePickerChangeEnd = (date) => {
+        if (!date) { // check if date is null or undefined
+            setIsOpenEnd(false);
+            setDateTournoisEnd('');
+        } else {
+            setIsOpenEnd(false);
+            const formattedDate = date.toLocaleDateString('fr-CA');
+            setDateTournoisEnd(formattedDate);
+        }
+    };
+
+    
+  const handleGameChange = (game) => {
+    setSelectedGame(game);
+  }
+    const ajouterTournois = async (event) => {
+        event.preventDefault();
+         console.log(nomTournois,selectedGame,dateTournoisStart,dateTournoisEnd, heureTournois,token); 
+        
+        try {
+            const response = await fetch("http://localhost:8080/ws/creertournois", {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
@@ -32,16 +76,27 @@ export const CreerTournois = () => {
                 },
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({
+                    nom: nomTournois,
+                    game: selectedGame,
+                    date_start: dateTournoisStart,
+                    date_end: dateTournoisEnd,
+                    heure: heureTournois,
+                    token: token,
+                    
+                }),
             });
             const data = await response.json();
             if (data.status === 'success') {
-                // Stocker le token dans le stockage local du navigateur
-                localStorage.setItem('token', data.token);
                 // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
-                window.location.href = '/home?success=true';
+                //window.location.href = '/home';
+                console.log("Success!");
+                toast.success('Création de nouveau tournois effectué !', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
             } else {
                 // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
+                console.log('Echec création de votre tournois veuillez réessayer :', data.message);
 
                 toast.error(data.message, {
                     position: toast.POSITION.TOP_RIGHT
@@ -49,65 +104,99 @@ export const CreerTournois = () => {
             }
         } catch (error) {
             console.error(error);
-        } */
-
+        }
     };
-
     return (
-        <div>
-            <Menu />
-            <section className="h-100 gradient-form conins-style mt-5">
-                <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-xl-10">
-                            <div className="card rounded-3 text-black">
-                                <div className="row g-0">
-                                    <div className="col-lg-6 d-flex align-items-center gradient-custom-2">
-                                        <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                                            <h1 className="mb-5 text-center">Bienvenue chers Gamer sur notre page de connexion !</h1>
-                                            <p className="small mb-0">Une fois connecté, vous pourrez participer à des compétitions de haut niveau dans différents jeux vidéo populaires,
-                                                en affrontant d'autres joueurs du monde entier. Que vous soyez un amateur ou un professionnel,
-                                                vous trouverez ici des tournois adaptés à votre niveau et à vos préférences.</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-6">
-                                        <div className="card-body p-md-5 mx-md-4">
-
-                                            <div className="text-center">
-
-                                                <h4 className="mt-1 mb-5 pb-1">E-Sport Tournois</h4>
-                                            </div>
-                                            <form className="needs-validation" method="POST" onSubmit={handleSubmit}>
-                                                <div className="form-floating mb-4">
-                                                    <input type="text" name="username" className="form-control" placeholder="Pseudo" onChange={(e) => { setTitle(e.target.value) }} required />
-                                                    <label className="form-label" htmlFor="username">Pseudo</label>
-                                                </div>
-                                                <div className="form-floating mb-4">
-                                                    <input type="password" name="password" className="form-control" placeholder="Mot de passe" onChange={(e) => { setStartDate(e.target.value) }} required />
-                                                    <label className="form-label" htmlFor="password">Mot de passe</label>
-                                                </div>
-                                                <div className="text-center pt-1 mb-0 pb-1">
-                                                    <input type="submit" name="submit" className="btn btn-light btn-block fa-lg gradient-custom-2 mb-3 col-12" value="CONNEXION" />
-                                                </div>
-                                                <div className="text-center pt-1 mb-5 pb-1">
-                                                    <a className="text-muted" href="#!">Mot de passe oublié ?</a>
-                                                </div>
-                                                <div className="d-flex align-items-center justify-content-center pb-4">
-                                                    <p className="mb-0 me-2">Pas encore  inscrit ?</p>
-                                                    <a type="button" className="btn btn-outline-dark" href="/inscription">Créer un compte</a>
-                                                </div>
-                                                <a type="text" className='d-flex align-items-center justify-content-center' href="/home">Revenir a l'accueil</a>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <ToastContainer />
-            <Footer color="footer-violet" color2="footer-violet2"/>
-        </div>
+        <Container>
+            <h1>Créer un Tournois</h1>
+            <Form onSubmit={(e) => {
+                e.preventDefault();
+                ajouterTournois();
+            }}>
+                <GameSelect handleGameChange={handleGameChange}></GameSelect>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        Nom du Tournois :
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control type="text" placeholder="Entrez le nom du Tournois" value={nomTournois} onChange={(e) => setNomTournois(e.target.value)} required/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        Date début du Tournois :
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control
+                            type="text"
+                            placeholder="Entrez la date du Tournois"
+                            value={dateTournoisStart ? new Date(dateTournoisStart).toLocaleDateString('fr-FR') : ''}
+                            onClick={handleInputClickStart}
+                            onChange={(e) => setDateTournoisStart(e.target.value)}
+                            required
+                        />
+                        <DatePicker
+                            isOpen={isOpenStart}
+                            title="Date de tournois"
+                            onClose={() => setIsOpenStart(false)}
+                            onChange={handleDatePickerChangeStart}
+                            defaultValue={dateTournoisStart}
+                            colorScheme='purple'
+                            selected={dateTournoisStart}
+                            //minDate={new Date('12/05/2023')}
+                            //maxDate={nextYear}
+                            clickOutsideToClose={() => setIsOpenStart(false)}
+                            yearDropdownItemNumber={2}
+                            
+                            
+                            
+                        />
+                    </Col>
+                </Form.Group>
+                 <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        Date fin du Tournois :
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control
+                            type="text"
+                            placeholder="Entrez la date du Tournois"
+                            value={dateTournoisEnd ? new Date(dateTournoisEnd).toLocaleDateString('fr-FR') : ''}
+                            onClick={handleInputClickEnd}
+                            onChange={(e) => setDateTournoisEnd(e.target.value)}
+                            required
+                        />
+                        <DatePicker
+                            isOpen={isOpenEnd}
+                            title="Date de tournois"
+                            onClose={() => setIsOpenEnd(false)}
+                            onChange={handleDatePickerChangeEnd}
+                            defaultValue={dateTournoisEnd}
+                            colorScheme='purple'
+                            selected={dateTournoisEnd}
+                            //minDate={new Date('12/05/2023')}
+                            //maxDate={nextYear}
+                            clickOutsideToClose={() => setIsOpenEnd(false)}
+                            yearDropdownItemNumber={2}
+                            
+                            
+                            
+                        />
+                    </Col>
+                </Form.Group> 
+                
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>
+                        Heure du Tournois :
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control type="time" placeholder="Entrez l'heure du Tournois" value={heureTournois} onChange={(e) => setHeureTournois(e.target.value)} required/>
+                    </Col>
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={ajouterTournois}>
+                    Créer le Tournois
+                </Button>
+            </Form>
+        </Container>
     );
 };

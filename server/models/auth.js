@@ -44,7 +44,7 @@ export async function getSalt(username) {
         }
 }
 
-export async function getUser(username, password) {
+export async function verifUser(username, password) {
         let response = false;
         try {
                 const conn = await db;

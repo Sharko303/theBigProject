@@ -1,4 +1,5 @@
 import * as loginController from './controllers/login.js';
+import * as tournoisController from './controllers/tournois.js';
 import express from 'express';
 // import cors from 'cors';
 import proxy from 'express-http-proxy'
@@ -12,9 +13,12 @@ const PORT = process.env.PORT || 8080;
 
 //app.use('/', proxy('http://192.168.8.155:3000'))
 
+// Requête connexion et inscription 
 app.post('/ws/validatePassword', loginController.identification);
 app.post('/ws/inscription', loginController.inscription);
 
+//Requête création de tournois
+app.post('/ws/creertournois', tournoisController.creerTournois);
 
 app.use('/', proxy('http://127.0.0.1:3000', {
   filter: function(req, res) {

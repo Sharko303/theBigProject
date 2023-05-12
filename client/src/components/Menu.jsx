@@ -113,7 +113,7 @@ const MyNavbar = () => {
               </Nav.Link>
               <Nav.Item className="mx-auto sidebar-end">
                 <Nav.Link href="/connexion" className="fw-bolder">
-                  <Button className="btn-danger" style={{ position: 'relative', overflow: 'hidden' }}>
+                  <Button className="btn-danger" onClick={handleLogout} style={{ position: 'relative', overflow: 'hidden' }}>
                     <BiLogOut className="icon-color" />
                     {isActive && (
                       <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
