@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { DatePicker } from "react-responsive-datepicker";
-import {GameSelect } from '../components/GameSelect';
+import { GameSelect } from '../components/GameSelect';
 export const CreerTournois = () => {
     const [nomTournois, setNomTournois] = useState('');
     const [dateTournoisStart, setDateTournoisStart] = useState(new Date());
@@ -27,44 +27,49 @@ export const CreerTournois = () => {
         today.setHours(0, 0, 0, 0);
         setDateTournoisStart(today);
     };
-    
+
     const handleDatePickerChangeStart = (date) => {
         if (!date) { // check if date is null or undefined
             setIsOpenStart(false);
             setDateTournoisStart('');
         } else {
             setIsOpenStart(false);
-            const formattedDate = date.toLocaleDateString('fr-CA');
+            /*             const formattedDate = date.toLocaleDateString('fr-FR',{
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        }); */
+            const formattedDate = date
             setDateTournoisStart(formattedDate);
         }
     };
-    
+
     const handleInputClickEnd = () => {
         setIsOpenEnd(true);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         setDateTournoisEnd(today);
     };
-    
+
     const handleDatePickerChangeEnd = (date) => {
         if (!date) { // check if date is null or undefined
             setIsOpenEnd(false);
             setDateTournoisEnd('');
         } else {
             setIsOpenEnd(false);
-            const formattedDate = date.toLocaleDateString('fr-CA');
+            const formattedDate = date;
             setDateTournoisEnd(formattedDate);
         }
     };
 
-    
-  const handleGameChange = (game) => {
-    setSelectedGame(game);
-  }
+
+    const handleGameChange = (game) => {
+        setSelectedGame(game);
+    }
     const ajouterTournois = async (event) => {
         event.preventDefault();
-         console.log(nomTournois,selectedGame,dateTournoisStart,dateTournoisEnd, heureTournois,token); 
-        
+        console.log(nomTournois, selectedGame, dateTournoisStart, dateTournoisEnd, heureTournois, token);
+
         try {
             const response = await fetch("http://localhost:8080/ws/creertournois", {
                 method: "POST",
@@ -83,7 +88,7 @@ export const CreerTournois = () => {
                     date_end: dateTournoisEnd,
                     heure: heureTournois,
                     token: token,
-                    
+
                 }),
             });
             const data = await response.json();
@@ -119,7 +124,7 @@ export const CreerTournois = () => {
                         Nom du Tournois :
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Control type="text" placeholder="Entrez le nom du Tournois" value={nomTournois} onChange={(e) => setNomTournois(e.target.value)} required/>
+                        <Form.Control type="text" placeholder="Entrez le nom du Tournois" value={nomTournois} onChange={(e) => setNomTournois(e.target.value)} required />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -130,7 +135,7 @@ export const CreerTournois = () => {
                         <Form.Control
                             type="text"
                             placeholder="Entrez la date du Tournois"
-                            value={dateTournoisStart ? new Date(dateTournoisStart).toLocaleDateString('fr-FR') : ''}
+                            value={dateTournoisStart ? new Date(dateTournoisStart) : ''}
                             onClick={handleInputClickStart}
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
@@ -147,13 +152,10 @@ export const CreerTournois = () => {
                             //maxDate={nextYear}
                             clickOutsideToClose={() => setIsOpenStart(false)}
                             yearDropdownItemNumber={2}
-                            
-                            
-                            
                         />
                     </Col>
                 </Form.Group>
-                 <Form.Group as={Row}>
+                <Form.Group as={Row}>
                     <Form.Label column sm={2}>
                         Date fin du Tournois :
                     </Form.Label>
@@ -161,9 +163,9 @@ export const CreerTournois = () => {
                         <Form.Control
                             type="text"
                             placeholder="Entrez la date du Tournois"
-                            value={dateTournoisEnd ? new Date(dateTournoisEnd).toLocaleDateString('fr-FR') : ''}
-                            onClick={handleInputClickEnd}
-                            onChange={(e) => setDateTournoisEnd(e.target.value)}
+                            value={dateTournoisStart ? new Date(dateTournoisStart) : ''}
+                            onClick={handleInputClickStart}
+                            onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
                         />
                         <DatePicker
@@ -178,19 +180,16 @@ export const CreerTournois = () => {
                             //maxDate={nextYear}
                             clickOutsideToClose={() => setIsOpenEnd(false)}
                             yearDropdownItemNumber={2}
-                            
-                            
-                            
                         />
                     </Col>
-                </Form.Group> 
-                
+                </Form.Group>
+
                 <Form.Group as={Row}>
                     <Form.Label column sm={2}>
                         Heure du Tournois :
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Control type="time" placeholder="Entrez l'heure du Tournois" value={heureTournois} onChange={(e) => setHeureTournois(e.target.value)} required/>
+                        <Form.Control type="time" placeholder="Entrez l'heure du Tournois" value={heureTournois} onChange={(e) => setHeureTournois(e.target.value)} required />
                     </Col>
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={ajouterTournois}>

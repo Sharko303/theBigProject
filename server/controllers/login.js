@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import sgMail from '@sendgrid/mail'
+import dotenv from 'dotenv';
+dotenv.config()
 
-//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
 export async function identification(request, response) {
   const { username, password } = request.body || {};
   if (!username || !password) {
@@ -27,6 +28,13 @@ export async function identification(request, response) {
     }
 
     const token = await requete.getToken(username);
+
+    response.cookie("Authentification", token, {
+      expire:0,
+      secure:false,
+      httpOnly:true
+    })
+
     response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });
   } catch (err) {
     response.status(401).json({ status: 'error', message: err.message });
@@ -48,9 +56,8 @@ export async function inscription(request, response) {
     const confirmationUrl = `http://localhost:8080/ws/confirm-email?token=${token}`;
     try {
       if (await requete.setUser(username, passwordHash, email, salt, confirmationUrl, token)) {
-        console.log('on essaye sgMail');
-        sgMail.setApiKey('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');
-
+        sgMail.setApiKey(process.env.API_KEY);
+        console.log(process.env.API_KEY)
         const confirmationEmail = {
           to: email,
           from: 'e.sport.tournois@gmail.com',
@@ -81,6 +88,7 @@ export async function inscription(request, response) {
 
 export async function confirmMail(req, res) {
   const token = req.query.token;
+
   console.log('on est dedans')
   let email
   let tokenUser

@@ -1,6 +1,10 @@
 import * as requete from '../models/auth.js'
+<<<<<<< Updated upstream
 import * as event from '../models/event.js'
 import { getCookie } from './login.js';
+=======
+import * as Event from '../models/event.js'
+>>>>>>> Stashed changes
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
@@ -11,6 +15,7 @@ import sgMail from '@sendgrid/mail'
 //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
 export async function creerTournois(request, response) {
   try {
+<<<<<<< Updated upstream
     const { nom, game, date_start, date_end, heure, token } = request.body;
 
     let reqUser = await requete.getUserInfo(token)
@@ -26,9 +31,25 @@ export async function creerTournois(request, response) {
     });
 
     response.status(201).json({ tournois });
+=======
+    const event = request.body;
+    //console.log(info.token)
+    let reqUser = await requete.getUserInfo(event.token)
+    //console.log("username" + reqUser.id)
+    event.user_creator = reqUser.user_id;
+    //console.log(info)
+    event.date_start = event.date_start.slice(0, 10)
+    event.date_end = event.date_end.slice(0, 10)
+    let dateAjout = new Date()
+    dateAjout = dateAjout.toISOString().slice(0, 19)
+    event.dateAjout = dateAjout
+    const tournois = await Event.create(event);
+    console.log(tournois)
+    response.status(201).json({ status: 'success' });
+>>>>>>> Stashed changes
   } catch (error) {
     console.error(error);
-    response.status(500).json({ message: 'Erreur serveur' });
+    response.status(401).json({ status: 'error' });
   }
 }
 

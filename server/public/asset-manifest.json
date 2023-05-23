@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5ac76a0e.css",
+    "main.js": "/static/js/main.2d9a279b.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/rocket_caroussel.webp": "/static/media/rocket_caroussel.df40f3ed3ec2d4324822.webp",
+    "static/media/fond-violet.webp": "/static/media/fond-violet.63b045d768c2ad49af24.webp",
+    "static/media/fond-violet.jpg": "/static/media/fond-violet.05a2bf5434ae9516558b.jpg",
+    "static/media/tableau_caroussel.webp": "/static/media/tableau_caroussel.ccc93fe1bf2570b6f732.webp",
+    "static/media/valorant.webp": "/static/media/valorant.565793ca4c5bc491963e.webp",
+    "static/media/valorant_caroussel.webp": "/static/media/valorant_caroussel.d05224bfbdcda1d945e0.webp",
+    "static/media/favicon.ico": "/static/media/favicon.4de24943e67e1e0771fe.ico",
+    "index.html": "/index.html",
+    "main.5ac76a0e.css.map": "/static/css/main.5ac76a0e.css.map",
+    "main.2d9a279b.js.map": "/static/js/main.2d9a279b.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5ac76a0e.css",
+    "static/js/main.2d9a279b.js"
+  ]
+}

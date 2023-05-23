@@ -5,11 +5,16 @@ import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCookieValue } from '../components/Cookie';
+
 export const Connexion = () => {
     // on change le titre de notre page
     document.title = "E-Sport | Connexion";
 
     const token = localStorage.getItem('token');
+
+    const authenticationValue = getCookieValue('Authentification');
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -21,7 +26,7 @@ export const Connexion = () => {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
-                credentials: "same-origin",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -75,8 +80,10 @@ export const Connexion = () => {
             {/* <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" /> */}
             <Menu />
             <ToastContainer />
-            {token ? (
-                <p>Vous êtes déjà connecté !</p>
+            {authenticationValue ? (
+                <div className='body-space'>
+                    <p className='text-center p-5'>Vous êtes déjà connecté !</p>
+                </div>
             ) : (
                 <section className="h-100 gradient-form conins-style">
                     <Container className="py-5 h-100">

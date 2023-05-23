@@ -8,11 +8,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
-
+import { getCookieValue } from '../components/Cookie';
 
 export const Home = () => {
     // on change le titre de notre page
     document.title = "E-Sport | Accueil";
+
+    const authenticationValue = getCookieValue('Authentification');
+    console.log("Cookie = " + authenticationValue)
 
     // on récupère les paramètres de notre url
     const location = useLocation();
@@ -88,7 +91,7 @@ export const Home = () => {
                             <Col lg='4' md='4'>
                                 <Container className='home-right content-home-no-mobile'>
 
-                                    {token ? (
+                                    {authenticationValue ? (
                                         <Row>
                                             <Col>
                                                 <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
@@ -131,7 +134,7 @@ export const Home = () => {
                             </Col>
                         </Row>
 
-                    </div >
+                    </div>
                 </Col>
                     <Col md={12}>
                         <Container className="my-5 text-dark">

@@ -1,19 +1,32 @@
 import db from './connexionbdd.js';
 
-export async function createTournament(nom, game, username, date_start, date_stop, heure) {
+export async function create(event) {
         try {
+<<<<<<< Updated upstream
                 const dateAjout = new Date()
                 console.log("Informations :", nom, game, username, date_start, date_stop, heure)
                 const conn = await db;
                 const query = `INSERT INTO Events (name, game, user_creator, nb_users, date_start, date_stop, create_date) VALUES (?, ?, ?, ?, ?, ?, ?);`;
                 const params = [nom, game, username, 16, date_start, date_stop, dateAjout];
+=======
+
+
+                console.log("Informations :", event);
+                const conn = await db;
+                const query = `INSERT INTO Events (name, game, user_creator, nb_users, date_start, date_stop,heure, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+                const params = [event.nom, event.game, event.user_creator, 16, event.date_start, event.date_end, event.heure, event.dateAjout];
+>>>>>>> Stashed changes
                 const result = await conn.query(query, params);
-                return result;
+                const insertId = result.insertId.toString(); // Convertir le BigInt en chaîne de caractères
+                const numberId = parseInt(insertId);
+                console.log(numberId);
+                return getTournament(numberId);
         } catch (err) {
                 console.error("Erreur lors de l'exécution de la requête INSERT:", err);
                 throw err;
         }
 }
+<<<<<<< Updated upstream
 
 export async function getAllTournois() {
         try {
@@ -54,3 +67,19 @@ export async function setData(table, colone, values) {
                 throw error;
               }
 }
+=======
+export async function getTournament(id) {
+        try {
+                const conn = await db;
+                const rows = await conn.query(`SELECT * FROM Events WHERE event_id LIKE '${id}'`);
+                if (rows.length > 0) {
+                        return rows
+                } else {
+                        throw new Error("Aucun tournois trouvé avec cette id.");
+                }
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
+        }
+}
+>>>>>>> Stashed changes
