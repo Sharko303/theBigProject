@@ -120,7 +120,7 @@
   .body-space {
     padding-left: 91px;
     padding-right: 0;
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   .sidebar-btn {
@@ -329,6 +329,13 @@
   color: rgb(231, 205, 57);
 }
 
+.card-yellow, .list-group-tournois{
+  background: linear-gradient(to left, rgb(255, 217, 0), rgb(255, 217, 0), rgb(255, 187, 0), rgb(231, 150, 57));
+}
+.list-group-tournois{
+background-color: #f2f2f2;
+  color: #333333;
+}
 .footer-violet, .fond-violet {
   /*On met notre footer en bg-color violet et color jaune*/
   color :rgb(231, 150, 57);

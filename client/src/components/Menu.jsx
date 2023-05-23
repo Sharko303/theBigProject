@@ -103,7 +103,7 @@ const MyNavbar = () => {
                   </span>
                 )}
               </Nav.Link>
-              <Nav.Link href="/creertournois" className={`mx-3 fw-bolder mt-5 sidebar-btn sidebar-middle ${isActive ? 'active' : ''}`}>
+              <Nav.Link href="/listetournois" className={`mx-3 fw-bolder mt-5 sidebar-btn sidebar-middle ${isActive ? 'active' : ''}`}>
                 <BiJoystick className="icon-color" />
                 {isActive && (
                   <span className='mx-2 text-black fade show animate__animated animate__fadeInLeft' >

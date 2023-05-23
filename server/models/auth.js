@@ -1,34 +1,5 @@
 import db from './connexionbdd.js';
 
-/* export function getUser(username, password, callback) {
-        db.query(`SELECT * FROM Users WHERE username LIKE '${username}' AND password LIKE '${password}'`, (error, results, fields) => {
-                if (error) {
-                        callback(error, null);
-                } else {
-                        callback(null, results);
-                }
-        });
-} */
-/* export function setUser(username, password, email, salt, confirmUrl, callback) {
-        db.query(`INSERT INTO Users (username, password, email, salt, active, url_confirm) VALUES ('${username}', '${password}', '${email}', '${salt}',0 , '${confirmUrl}');`, (error, results, fields) => {
-                if (error) {
-                        callback(error, null);
-                } else {
-                        callback(null, results);
-                }
-        });
-} */
-/* export function getSalt(username, callback) {
-        db.query(`SELECT salt FROM Users WHERE username LIKE '${username}'`, (error, results, fields) => {
-          if (error) {
-            callback(error, null);
-          } else if (results && results.length > 0) {
-            callback(null, results[0].salt);
-          } else {
-            callback(new Error(`Aucun utilisateur trouvé avec le nom d'utilisateur '${username}'`), null);
-          }
-        });
-      } */
 export async function getSalt(username) {
         try {
                 const conn = await db;
@@ -139,6 +110,39 @@ export async function getToken(username) {
                 } else {
                         throw new Error("Aucun utilisateur trouvé avec ce nom d'utilisateur.");
                 }
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
+        }
+}
+export async function getUserById(id) {
+        try {
+                const conn = await db;
+                const rows = await conn.query(`SELECT username FROM Users WHERE user_id LIKE '${id}'`);
+                return rows[0].username
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
+        }
+}
+
+export async function getAll(table, critere) {
+        try {
+                const conn = await db;
+                const sql = `SELECT * FROM ${table} WHERE ${critere}`;
+                const [rows] = await conn.query(sql);
+                return rows;
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
+        }
+}
+export async function getData(colone, table, critere, value) {
+        try {
+                const conn = await db;
+                const sql = `SELECT ${colone} FROM ${table} WHERE ${critere} LIKE '${value}'`;
+                const rows = await conn.query(sql);
+                return rows;
         } catch (err) {
                 console.error("Erreur lors de l'exécution de la requête SELECT:", err);
                 throw err;

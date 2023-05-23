@@ -93,10 +93,36 @@ export async function confirmMail(req, res) {
       res.redirect('/connexion?error=already_confirmed');
       return;
     }
-      await requete.setAccountActive(token);
-      res.redirect('/connexion?success=true');
+    await requete.setAccountActive(token);
+    res.redirect('/connexion?success=true');
   } catch (error) {
     res.redirect('/connexion?error=true')
   }
 }
+
+export async function getUserById(request, response) {
+  try {
+    const userId = request.params.userId;
+    const username = await requete.getUserById(userId)
+    response.status(201).json({ status: 'success', message: "Récupération réussite",username  })
+  } catch (err) {
+    console.error(err)
+    response.status(500).json({ status: 'error', message: "Récupération impossible" })
+  }
+}
+
+export async function getCookie(cookie, name) {
+  const cookies = cookie.split(';');
+  
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  
+  return null;
+}
+
 
