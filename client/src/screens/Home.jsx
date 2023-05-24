@@ -15,7 +15,7 @@ export const Home = () => {
     document.title = "E-Sport | Accueil";
 
     const authenticationValue = getCookieValue('Authentification');
-    console.log("Cookie = " + authenticationValue)
+    console.log("Cookie : " + document.cookie);
 
     // on récupère les paramètres de notre url
     const location = useLocation();
@@ -36,8 +36,6 @@ export const Home = () => {
 
         if (success === 'true' && countToast < 1) {
             toast.success('Connexion réussie !');
-            console.log('toast');
-            console.log(countToast)
             countToast = 1
         }
     }, [location.search]);

@@ -19,13 +19,14 @@ export const ListeTournois = () => {
     const fetchTournois = async () => {
         try {
             const token = document.cookie;
-            const response = await fetch('/ws/getTournois', {
+            console.log(token);
+            const response = await fetch('http://localhost:8080/ws/getTournois', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             const data = await response.json();
-            if (data.status === 'success') {
+           /*  if (data.status === 'success') {
                 setTournois(data.tournois);
 
                 // Filtrer les tournois auxquels vous êtes inscrit
@@ -38,7 +39,7 @@ export const ListeTournois = () => {
                 toast.error(data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-            }
+            } */
         } catch (error) {
             console.error('Erreur lors de la récupération des tournois :', error);
         }
@@ -129,11 +130,11 @@ export const ListeTournois = () => {
                                             </ListGroup>
 
                                             {estInscrit ? (
-                                                <Button variant="primary" onClick={() => console.log("on quitte")}>
+                                                <Button variant="danger" onClick={() => console.log("on quitte")}>
                                                     Quitter
                                                 </Button>
                                             ) : (
-                                                <Button variant="primary" onClick={() => rejoindreTournoi(tournoi.event_id)}>
+                                                <Button variant="success" onClick={() => rejoindreTournoi(tournoi.event_id)}>
                                                     Rejoindre
                                                 </Button>
                                             )}

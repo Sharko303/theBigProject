@@ -1,10 +1,11 @@
 import * as loginController from './controllers/login.js';
 import * as tournoisController from './controllers/tournois.js';
 import express from 'express';
-// import cors from 'cors';
-import proxy from 'express-http-proxy';
-//let history = require('connect-history-api-fallback')
-import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -47,10 +48,16 @@ app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
   }
 })); */
 
+ 
 app.get('/ws/confirm-email', loginController.confirmMail);
 
 app.get('/ws/getTournois', tournoisController.listeTournois);
 app.get('/ws/users/:userId', loginController.getUserById);
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+}); // on redirige toute les routes inconnues vers le fichier index.html pour que React puisse gérer le routage côté client
 
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 

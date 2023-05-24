@@ -32,7 +32,7 @@ export async function identification(request, response) {
     response.cookie("Authentification", token, {
       expire:0,
       secure:false,
-      httpOnly:true
+      httpOnly:false
     })
 
     response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });

@@ -18,8 +18,8 @@ export const CreerTournois = () => {
     //const today = new Date();
     // const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Pour limiter la date 
 
-    const token = localStorage.getItem('token');
-
+    //const token = localStorage.getItem('token');
+    const token = document.cookie
 
     const handleInputClickStart = () => {
         setIsOpenStart(true);
