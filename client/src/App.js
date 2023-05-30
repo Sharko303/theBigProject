@@ -6,8 +6,8 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { Inscription } from './screens/Inscription'
 import { Connexion } from './screens/Connexion'
 import { CreerTournois } from './screens/CreerTournois';
-import { ListeTournois } from './screens/Tournois';
-
+import { ListeTournois } from './screens/ListeTournois';
+import { Tournois } from './screens/Tournois';
 function App() {
   return (
     <div>
@@ -18,6 +18,7 @@ function App() {
         <Route path='/inscription' element={<Inscription />} />
         <Route path='/creertournois' element={<CreerTournois />} />
         <Route path='/listetournois' element={<ListeTournois />} />
+        <Route path='/tournois' element={<Tournois />} />
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </div>

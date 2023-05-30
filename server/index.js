@@ -19,13 +19,13 @@ app.use(express.static('public'))
 app.use('/ws', (req, res, next) => {
   const origin = req.headers.origin;
   res.set({
-  "Access-Control-Allow-Origin": origin,
-  "Access-Control-Allow-Credentials": true,
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
-  "Access-Control-Allow-Headers": "Content-Type, *",
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+    "Access-Control-Allow-Headers": "Content-Type, *",
   })
   next();
-  });
+});
 // Requête connexion et inscription 
 app.post('/ws/validatePassword', loginController.identification);
 app.post('/ws/inscription', loginController.inscription);
@@ -33,6 +33,7 @@ app.post('/ws/inscription', loginController.inscription);
 //Requête création de tournois
 app.post('/ws/creertournois', tournoisController.creerTournois);
 app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
+
 
 
 
@@ -48,17 +49,18 @@ app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
   }
 })); */
 
- 
+
 app.get('/ws/confirm-email', loginController.confirmMail);
 
+app.get('/ws/tournois/:numTournois', tournoisController.tableauParticipant);
 app.get('/ws/getTournois', tournoisController.listeTournois);
 app.get('/ws/users/:userId', loginController.getUserById);
 
-
+/* 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 }); // on redirige toute les routes inconnues vers le fichier index.html pour que React puisse gérer le routage côté client
-
+ */
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 
 
