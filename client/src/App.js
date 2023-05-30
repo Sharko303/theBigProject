@@ -1,6 +1,6 @@
 import './App.css';
 import './DarkMode.css';
-import "react-responsive-datepicker/dist/index.css";
+/* import "react-responsive-datepicker/dist/index.css"; */
 import { Home } from './screens/Home'
 import { Navigate, Route, Routes } from "react-router-dom"
 import { Inscription } from './screens/Inscription'

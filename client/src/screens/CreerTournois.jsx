@@ -5,7 +5,7 @@ import { Footer } from '../components/Footer';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { DatePicker } from "react-responsive-datepicker";
+/* import { DatePicker } from "react-responsive-datepicker"; */
 import { GameSelect } from '../components/GameSelect';
 export const CreerTournois = () => {
     const [nomTournois, setNomTournois] = useState('');
@@ -140,7 +140,7 @@ export const CreerTournois = () => {
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
                         />
-                        <DatePicker
+                        {/* <DatePicker
                             isOpen={isOpenStart}
                             title="Date de tournois"
                             onClose={() => setIsOpenStart(false)}
@@ -152,7 +152,7 @@ export const CreerTournois = () => {
                             //maxDate={nextYear}
                             clickOutsideToClose={() => setIsOpenStart(false)}
                             yearDropdownItemNumber={2}
-                        />
+                        /> */}
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -168,7 +168,7 @@ export const CreerTournois = () => {
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
                         />
-                        <DatePicker
+                       {/*  <DatePicker
                             isOpen={isOpenEnd}
                             title="Date de tournois"
                             onClose={() => setIsOpenEnd(false)}
@@ -180,7 +180,7 @@ export const CreerTournois = () => {
                             //maxDate={nextYear}
                             clickOutsideToClose={() => setIsOpenEnd(false)}
                             yearDropdownItemNumber={2}
-                        />
+                        /> */}
                     </Col>
                 </Form.Group>
 

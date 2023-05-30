@@ -78,18 +78,21 @@ export async function rejoindreTournois(request, response) {
 
 export async function tableauParticipant(request, response) {
   try {
-  // Route pour récupérer les participants inscrits
-  // Code pour récupérer les participants depuis la base de données
-  // ...
-  const id_tournois = request.params.numTournois;
-  // Exemple de participants fictifs (remplacez cette partie avec votre propre logique de récupération des participants)
-  const participants = await requete.getData('*', 'Participants', 'event_id', id_tournois)
-  // Extrait les valeurs de la clé participant_id de chaque objet participant
-  const participantIds = participants.map(participant => participant.user_id);
-  console.log(participantIds)
-  response.status(200).json({ status: 'success', message: 'Participant récupéré', participantIds });
-} catch (error) {
-  console.error('Erreur lors de la récupération des participants :', error);
-  response.status(500).json({ error: 'Erreur serveur lors de la récupération des participants' });
-}
+    // Route pour récupérer les participants inscrits
+    // Code pour récupérer les participants depuis la base de données
+    // ...
+    const id_tournois = request.params.numTournois;
+    const participants = await requete.getData('*', 'Participants', 'event_id', id_tournois);
+    const participantIds = participants.map(participant => participant.user_id);
+    console.log(participantIds)
+    const participantName = await requete.getDatas('*', 'Users', 'user_id', participantIds);
+    const participantNames = participantName.map(participant => participant.username);
+
+    console.log(participantNames)
+    console.log(participantIds)
+    response.status(200).json({ status: 'success', message: 'Participant récupéré', participantIds, participantNames });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des participants :', error);
+    response.status(500).json({ error: 'Erreur serveur lors de la récupération des participants' });
+  }
 }

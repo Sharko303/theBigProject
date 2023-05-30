@@ -148,3 +148,15 @@ export async function getData(colone, table, critere, value) {
                 throw err;
         }
 }
+
+export async function getDatas(colone, table, critere, values) {
+        try {
+                const conn = await db;
+                const sql = `SELECT ${colone} FROM ${table} WHERE ${critere} IN (${values.map(() => '?').join(',')})`;
+                const rows = await conn.query(sql, values);
+                return rows;
+        } catch (err) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw err;
+        }
+}
