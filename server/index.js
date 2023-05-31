@@ -3,6 +3,8 @@ import * as tournoisController from './controllers/tournois.js';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cron from 'node-cron'
+import * as requete from './models/auth.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -61,8 +63,27 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 }); // on redirige toute les routes inconnues vers le fichier index.html pour que React puisse gérer le routage côté client
  */
+
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 
+// Planification de l'exécution toutes les minutes
+cron.schedule('* * * * *', async () => {
+  const now = new Date();
+  const heureActuelle = now.toLocaleTimeString('fr-FR', { hour12: false });
 
+  try {
+    const heuresIdDebutTournois = await requete.getData('heure,event_id', 'Events');
+    console.log(heuresIdDebutTournois, 'heure debut')
+    console.log(heureActuelle)
+    if (heuresIdDebutTournois.some(heure => heure.heure === heureActuelle)) {
+      const heure = heuresIdDebutTournois.find(item => item.heure === heureActuelle);
+      let event_id = heure.event_id
+      console.log("On a la même heure");
+      await tournoisController.startTournois(heureActuelle,event_id);
+    }
+  } catch (error) {
+    console.log('Une erreur s\'est produite lors de la récupération des heures de début des tournois :', error);
+  }
+});
 
 //app.get('*', (req, res) => res.redirect('http://localhost:3000'));

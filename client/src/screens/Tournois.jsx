@@ -50,8 +50,10 @@ export const Tournois = () => {
 
       if (data.status === 'success') {
         const participants = data.participantIds;
-        const participantNames = data.participantNames
-        const eliminationTable = generateElimination(participants, participantNames);
+        const participantNames = data.participantNames;
+        console.log('participants:', participants);
+        console.log('participantNames:', participantNames);
+        const eliminationTable = await generateElimination(participants, participantNames);
         setEliminationTable(eliminationTable);
       } else {
         console.log('Erreur lors de la récupération des participants');
@@ -61,7 +63,7 @@ export const Tournois = () => {
     }
   };
 
-  function generateElimination(playerIds, playerNames) {
+  async function generateElimination(playerIds, playerNames) {
     let matches = [];
 
     // Organize players in pairs for the first round
@@ -73,33 +75,37 @@ export const Tournois = () => {
     // Create matches for the first round
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i];
-      console.log(pair, 'test')
-      const player1Name = playerNames[i];
-      const player2Name = playerNames[i + 1];
+      const player1Index = i * 2;
+      const player2Index = i * 2 + 1;
+      const player1Name = playerNames[player1Index] || "";
+      const player2Name = playerNames[player2Index] || "";
+
       const match = {
-        id: i+1,
+        id: i + 1,
         name: "semi-finals",
         scheduled: Number(new Date()),
+        players: pair,
+        winner: null,
         sides: {
           home: {
             team: {
-              id: pair[0],
-              name: player1Name
+              id: player1Index,
+              name: player1Name,
             },
             score: {
-              score: 0
-            }
+              score: 0,
+            },
           },
           visitor: {
             team: {
-              id: pair[1],
-              name: player2Name
+              id: player2Index,
+              name: player2Name,
             },
             score: {
-              score: 0
-            }
-          }
-        }
+              score: 0,
+            },
+          },
+        },
       };
       matches.push(match);
     }
@@ -108,62 +114,76 @@ export const Tournois = () => {
     while (pairs.length > 1) {
       const newPairs = [];
       for (let i = 0; i < pairs.length; i += 2) {
-        const winner1 = pairs[i][0];
-        const winner2 = pairs[i + 1][0];
+        const winner1Index = i * 2;
+        const winner2Index = i * 2 + 1;
+        const winner1Name = playerNames[winner1Index] || '';
+        const winner2Name = winner2Index < playerNames.length ? playerNames[winner2Index] : '';
 
-        const player1Name = playerNames[winner1];
-        const player2Name = playerNames[winner2];
-
-        const match = {
-          id: i + 1, // Generate unique ID for each match
-          name: "semi-finals",
-          scheduled: Number(new Date()),
-          sides: {
-            home: {
-              team: {
-                id: winner1,
-                name: player1Name
+        if (winner2Name !== '') {
+          const match = {
+            id: i + 1, // Generate unique ID for each match
+            players: [winner1Index, winner2Index],
+            winner: null,
+            sides: {
+              home: {
+                team: {
+                  id: winner1Index,
+                  name: winner1Name,
+                },
+                score: {
+                  score: 0,
+                },
               },
-              score: {
-                score: 0
-              }
+              visitor: {
+                team: {
+                  id: winner2Index,
+                  name: winner2Name,
+                },
+                score: {
+                  score: 0,
+                },
+              },
             },
-            visitor: {
-              team: {
-                id: winner2,
-                name: player2Name
-              },
-              score: {
-                score: 0
-              }
-            }
-          }
-        };
-        newPairs.push([winner1, winner2]);
-        matches.push(match);
+          };
+          newPairs.push([winner1Index, winner2Index]);
+          matches.push(match);
+        } else {
+          // Handle odd number of players, bye for one player
+          newPairs.push([winner1Index]);
+        }
       }
       pairs = newPairs;
     }
 
     return matches;
   }
-  console.log('eliminationTable :', eliminationTable[0])
+  console.log('eliminationTable[0] :', eliminationTable[0])
   console.log('autre', game1)
+  console.log('eliminationTable :', eliminationTable)
   return (
     <div>
-      <Container fluid className='body-space'>
-        <p>Bonjour je suis un test</p>
-        {eliminationTable ?
-          <Bracket game={game1} />
-          :
-          <p>Tournois INTROUVABLE !</p>
-        }
-        {/* <Bracket rounds={eliminationTable}>
-          {eliminationTable.map((match, index) => (
-            <BracketGame key={index} match={match} />
-          ))}
-        </Bracket> */}
-      </Container>
-    </div>
+  <Container fluid className='body-space'>
+    <p>Bonjour je suis un test</p>
+    {eliminationTable.length > 0 ? (
+      <div>
+        {eliminationTable.map((game, index) => {
+          // Afficher les éléments en paires consécutives
+          if (index % 2 === 0) {
+            return <Bracket key={index} game={game} />;
+          } else {
+            return null;
+          }
+        })}
+      </div>
+    ) : (
+      <p>Tournois INTROUVABLE !</p>
+    )}
+    {/* <Bracket rounds={eliminationTable}>
+      {eliminationTable.map((match, index) => (
+        <BracketGame key={index} match={match} />
+      ))}
+    </Bracket> */}
+  </Container>
+</div>
   );
 };

@@ -137,10 +137,15 @@ export async function getAll(table, critere) {
                 throw err;
         }
 }
-export async function getData(colone, table, critere, value) {
+export async function getData(colone, table, critere = '', value = '') {
         try {
                 const conn = await db;
-                const sql = `SELECT ${colone} FROM ${table} WHERE ${critere} LIKE '${value}'`;
+                let sql = `SELECT ${colone} FROM ${table}`;
+
+                if (critere && value) {
+                        sql += ` WHERE ${critere} LIKE '${value}'`;
+                }
+
                 const rows = await conn.query(sql);
                 return rows;
         } catch (err) {

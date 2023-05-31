@@ -96,3 +96,55 @@ export async function tableauParticipant(request, response) {
     response.status(500).json({ error: 'Erreur serveur lors de la récupération des participants' });
   }
 }
+export async function startTournois(heure, event_id, request, response) {
+  try {
+    const getParticipants = await requete.getData('user_id', 'Participants', 'event_id', event_id);
+    console.log(getParticipants);
+
+    const colone = ['fk_user1_id', 'fk_user2_id', 'fk_events_id', 'score_player1', 'score_player2', 'score_confirmed'];
+    const matches = [];
+
+    const participantsCount = getParticipants.length;
+    const pairCount = participantsCount / 2;
+
+    for (let i = 0; i < pairCount; i++) {
+      const fkUser1Id = getParticipants[i].user_id;
+      const fkUser2Id = getParticipants[i + pairCount].user_id;
+
+      const values = [fkUser1Id, fkUser2Id, event_id, 0, 0, 0];
+      const newMatch = await event.setData('Matches', colone, values);
+      matches.push(newMatch);
+    }
+
+    console.log('Matches créés :', matches);
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des participants :', error);
+  }
+}
+
+export async function genererMatches(request, response, heure) {
+  const eventId = requete.getData()
+  const heureChoisie = req.params.heureChoisie;
+
+  try {
+    const result = await matchModel.genererMatches(eventId, heureChoisie);
+    response.status(200).json({ message: 'Matches créés et stockés avec succès.' });
+  } catch (error) {
+    console.log('Une erreur s\'est produite lors de la génération des matches :', error);
+    response.status(500).json({ error: 'Une erreur s\'est produite lors de la génération des matches.' });
+  }
+}
+export async function getHeuresDebutTournois(request, response, heure) {
+  const eventId = requete.getData()
+  const heureChoisie = req.params.heureChoisie;
+
+  try {
+    const result = await matchModel.genererMatches(eventId, heureChoisie);
+    res.status(200).json({ message: 'Matches créés et stockés avec succès.' });
+  } catch (error) {
+    console.log('Une erreur s\'est produite lors de la génération des matches :', error);
+    res.status(500).json({ error: 'Une erreur s\'est produite lors de la génération des matches.' });
+  }
+}
+
