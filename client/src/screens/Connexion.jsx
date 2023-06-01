@@ -11,9 +11,10 @@ export const Connexion = () => {
     // on change le titre de notre page
     document.title = "E-Sport | Connexion";
 
-    const token = localStorage.getItem('token');
+    const token = document.cookie;
 
-    const authenticationValue = getCookieValue('Authentification');
+    /* const authenticationValue = getCookieValue('Authentification'); */
+    const authenticationValue = document.cookie;
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

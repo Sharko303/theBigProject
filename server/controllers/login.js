@@ -119,18 +119,12 @@ export async function getUserById(request, response) {
   }
 }
 
-export async function getCookie(cookie, name) {
-  const cookies = cookie.split(';');
+export async function isLogedIn(request, response){
+  try {
+    request.cookie.
+  }catch (err) {
   
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring(name.length + 1);
-    }
   }
-  
-  return null;
 }
 
 

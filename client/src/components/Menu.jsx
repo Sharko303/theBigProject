@@ -4,16 +4,14 @@ import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'rea
 import React, { useState, useEffect } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
+import * as cookie from '../components/Cookie';
 //import { Theme } from './Theme';
 
 export const Menu = () => {
-  const token = localStorage.getItem('token');
-  function handleLogout() {
-    localStorage.removeItem('token');
-    window.location.href = '/connexion'; // Redirigez l'utilisateur vers la page de connexion après la déconnexion
-  }
+  const token = document.cookie;
 
-  function focusMenu() {
+
+/*   function focusMenu() {
     let navbar = document.querySelector('.navbar');
     if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
       navbar.classList.add('navbar-scrolled');
@@ -24,7 +22,7 @@ export const Menu = () => {
       navbar.classList.add('navbar-dark');
       navbar.classList.remove('navbar-light');
     }
-  }
+  } */
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseEnter = () => {
@@ -113,7 +111,7 @@ const MyNavbar = () => {
               </Nav.Link>
               <Nav.Item className="mx-auto sidebar-end">
                 <Nav.Link href="/connexion" className="fw-bolder">
-                  <Button className="btn-danger" onClick={handleLogout} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <Button className="btn-danger" onClick={cookie.delCookie} style={{ position: 'relative', overflow: 'hidden' }}>
                     <BiLogOut className="icon-color" />
                     {isActive && (
                       <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>

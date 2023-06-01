@@ -19,6 +19,7 @@ app.use(express.static('public'))
 
 //app.use('/ws', cors());
 app.use('/ws', (req, res, next) => {
+  // if 
   const origin = req.headers.origin;
   res.set({
     "Access-Control-Allow-Origin": origin,
@@ -60,10 +61,15 @@ app.get('/ws/users/:userId', loginController.getUserById);
 
 /* 
 app.get('*', (req, res) => {
+// if(), rediriger sur connexion
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 }); // on redirige toute les routes inconnues vers le fichier index.html pour que React puisse gérer le routage côté client
+<<<<<<< Updated upstream
  */
 
+=======
+ 
+>>>>>>> Stashed changes
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 
 // Planification de l'exécution toutes les minutes

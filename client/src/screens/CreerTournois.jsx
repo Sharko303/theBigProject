@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 /* import { DatePicker } from "react-responsive-datepicker"; */
 import { GameSelect } from '../components/GameSelect';
+import * as cookie from '../components/Cookie';
+
 export const CreerTournois = () => {
     const [nomTournois, setNomTournois] = useState('');
     const [dateTournoisStart, setDateTournoisStart] = useState(new Date());
@@ -17,7 +19,10 @@ export const CreerTournois = () => {
     const [selectedGame, setSelectedGame] = useState(""); // Ajouter un état pour la valeur sélectionnée
     //const today = new Date();
     // const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Pour limiter la date 
-
+    useEffect(() => {
+        cookie.checkCookieAndRedirect();
+      }, []);
+      
     //const token = localStorage.getItem('token');
     const token = document.cookie
 

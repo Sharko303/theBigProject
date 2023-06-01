@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer';
 import Img from '../images/fond-violet.webp'
 import { BiPlus } from 'react-icons/bi';
 import { ToastContainer, toast } from 'react-toastify';
+<<<<<<< Updated upstream
 import { useParams } from 'react-router-dom';
 import { Bracket, BracketGame } from 'react-tournament-bracket';
 
@@ -24,6 +25,49 @@ export const Tournois = () => {
         },
         score: {
           score: 1
+=======
+import * as cookie from '../components/Cookie';
+
+export const ListeTournois = () => {
+    const [tournois, setTournois] = useState([]);
+    const [tournoisInscrits, setTournoisInscrits] = useState([]);
+    /* useEffect(() => {
+        cookie.checkCookieAndRedirect();
+      }, []); */
+
+    useEffect(() => {
+        cookie.checkCookieAndRedirect();
+        fetchTournois();
+        
+    }, []);
+
+    const fetchTournois = async () => {
+        try {
+            const token = document.cookie;
+            console.log(token);
+            const response = await fetch('http://localhost:8080/ws/getTournois', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const data = await response.json();
+             if (data.status === 'success') {
+                setTournois(data.tournois);
+
+                // Filtrer les tournois auxquels vous êtes inscrit
+                const tournoisInscrits = data.tournoisInscrit;
+                setTournoisInscrits(tournoisInscrits);
+                console.log("tournois : ", tournoisInscrits)
+            } else {
+                // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
+                console.log('Tournois non récupérés');
+                toast.error(data.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            } 
+        } catch (error) {
+            console.error('Erreur lors de la récupération des tournois :', error);
+>>>>>>> Stashed changes
         }
       },
       visitor: {
