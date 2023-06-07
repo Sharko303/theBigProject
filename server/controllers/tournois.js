@@ -206,11 +206,17 @@ function shuffle(array) {
 }
 
 export async function addScore(request, response) {
-  const eventId = requete.getData()
-  const heureChoisie = req.params.heureChoisie;
+  const body = request.body
+  const score1 = body.score1
+  const score2 = body.score2
+  const score = []
+  score[0] = score1;
+  score[1] = score2;
+  let colone = ['score_player1', 'score_player2']
+  console.log(score1, score2)
 
   try {
-    const result = 'requete';
+    const result = await event.setData('Matches',score,colone)
     response.status(200).json({ message: 'Matches créés et stockés avec succès.' });
   } catch (error) {
     console.log('Une erreur s\'est produite lors de la génération des matches :', error);

@@ -72,3 +72,20 @@ export async function getTournament(id) {
                 throw error;
         }
 }
+
+export async function updateData(table, colonne, values, critere) {
+        try {
+                const conn = await db; // Obtenez la connexion à la base de données
+            
+                // Créez la requête dynamiquement en utilisant les paramètres
+                const query = `INSERT INTO ${table} (${colonne.join(', ')}) VALUES (${values.map(() => '?').join(', ')}) WHERE ;`;
+            
+                const result = await conn.query(query, values); // Exécutez la requête avec les valeurs
+            
+                return result;
+              } catch (error) {
+                // Gérez les erreurs de manière appropriée
+                console.error('Erreur lors de l\'insertion des données:', error);
+                throw error;
+              }
+}
