@@ -30,9 +30,9 @@ export async function identification(request, response) {
     const token = await requete.getToken(username);
 
     response.cookie("Authentification", token, {
-      expire:0,
-      secure:false,
-      httpOnly:false
+      expire: 0,
+      secure: false,
+      httpOnly: false
     })
 
     response.status(200).json({ status: 'success', message: 'Données envoyées avec succès', token });
@@ -112,19 +112,30 @@ export async function getUserById(request, response) {
   try {
     const userId = request.params.userId;
     const username = await requete.getUserById(userId)
-    response.status(201).json({ status: 'success', message: "Récupération réussite",username  })
+    response.status(201).json({ status: 'success', message: "Récupération réussite", username })
   } catch (err) {
     console.error(err)
     response.status(500).json({ status: 'error', message: "Récupération impossible" })
   }
 }
 
-export async function isLogedIn(request, response){
+/* export async function isLogedIn(request, response){
   try {
     request.cookie.
   }catch (err) {
   
   }
 }
+ */
 
+export async function getCookie(cookie, name) {
+  const cookies = cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
 
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
+}

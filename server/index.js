@@ -36,6 +36,7 @@ app.post('/ws/inscription', loginController.inscription);
 //Requête création de tournois
 app.post('/ws/creertournois', tournoisController.creerTournois);
 app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
+ app.post('/ws/addscore', tournoisController.addScore); 
 
 
 
@@ -64,16 +65,13 @@ app.get('*', (req, res) => {
 // if(), rediriger sur connexion
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 }); // on redirige toute les routes inconnues vers le fichier index.html pour que React puisse gérer le routage côté client
-<<<<<<< Updated upstream
+
  */
 
-=======
- 
->>>>>>> Stashed changes
 app.listen(PORT, () => console.log(`Le serveur est lancer sur le port ${PORT}`));
 
 // Planification de l'exécution toutes les minutes
-cron.schedule('* * * * *', async () => {
+/* cron.schedule('* * * * *', async () => {
   const now = new Date();
   const heureActuelle = now.toLocaleTimeString('fr-FR', { hour12: false });
 
@@ -90,6 +88,6 @@ cron.schedule('* * * * *', async () => {
   } catch (error) {
     console.log('Une erreur s\'est produite lors de la récupération des heures de début des tournois :', error);
   }
-});
+}); */
 
 //app.get('*', (req, res) => res.redirect('http://localhost:3000'));

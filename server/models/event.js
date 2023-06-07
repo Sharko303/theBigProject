@@ -56,3 +56,19 @@ export async function setData(table, colone, values) {
                 throw error;
               }
 }
+
+
+export async function getTournament(id) {
+        try {
+                const conn = await db;
+                const rows = await conn.query(`SELECT * FROM Events WHERE event_id LIKE '${id}'`);
+                if (rows.length > 0) {
+                        return rows
+                } else {
+                        throw new Error("Aucun tournois trouvé avec cette id.");
+                }
+        } catch (error) {
+                console.error("Erreur lors de l'exécution de la requête SELECT:", err);
+                throw error;
+        }
+}

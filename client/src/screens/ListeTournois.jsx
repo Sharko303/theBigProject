@@ -6,7 +6,7 @@ import { Footer } from '../components/Footer';
 import Img from '../images/fond-violet.webp'
 import { BiPlus } from 'react-icons/bi';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
 
 export const ListeTournois = () => {
     const [tournois, setTournois] = useState([]);
@@ -26,7 +26,7 @@ export const ListeTournois = () => {
                 },
             });
             const data = await response.json();
-             if (data.status === 'success') {
+            if (data.status === 'success') {
                 setTournois(data.tournois);
 
                 // Filtrer les tournois auxquels vous êtes inscrit
@@ -39,7 +39,7 @@ export const ListeTournois = () => {
                 toast.error(data.message, {
                     position: toast.POSITION.TOP_RIGHT,
                 });
-            } 
+            }
         } catch (error) {
             console.error('Erreur lors de la récupération des tournois :', error);
         }
@@ -81,7 +81,7 @@ export const ListeTournois = () => {
     };
 
     let estInscrit
-console.log()
+    console.log(tournois)
     return (
         <div>
             <Menu />
@@ -134,10 +134,15 @@ console.log()
                                                     Quitter
                                                 </Button>
                                             ) : (
-                                                <Button variant="success" onClick={() => rejoindreTournoi(tournoi.event_id)}>
-                                                    Rejoindre
-                                                </Button>
+                                                <div>
+                                                    <Button variant="success" onClick={() => rejoindreTournoi(tournoi.event_id)}>
+                                                        Rejoindre
+                                                    </Button>
+                                                </div>
                                             )}
+                                            <Link to={`/tournois?id=${tournoi.event_id}`} className='btn btn-info'>
+                                                Voir
+                                            </Link>
                                             <hr />
                                         </Card.Body>
                                     </Card>

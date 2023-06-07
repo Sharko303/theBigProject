@@ -8,6 +8,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 /* import { DatePicker } from "react-responsive-datepicker"; */
 import { GameSelect } from '../components/GameSelect';
 import * as cookie from '../components/Cookie';
+import {BiJoystick} from 'react-icons/bi';
 
 export const CreerTournois = () => {
     const [nomTournois, setNomTournois] = useState('');
@@ -21,8 +22,8 @@ export const CreerTournois = () => {
     // const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Pour limiter la date 
     useEffect(() => {
         cookie.checkCookieAndRedirect();
-      }, []);
-      
+    }, []);
+
     //const token = localStorage.getItem('token');
     const token = document.cookie
 
@@ -118,6 +119,11 @@ export const CreerTournois = () => {
     };
     return (
         <Container>
+            <Col>
+                <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                    Listes tournois
+                </span></Button>
+            </Col>
             <h1>Créer un Tournois</h1>
             <Form onSubmit={(e) => {
                 e.preventDefault();
@@ -173,7 +179,7 @@ export const CreerTournois = () => {
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
                         />
-                       {/*  <DatePicker
+                        {/*  <DatePicker
                             isOpen={isOpenEnd}
                             title="Date de tournois"
                             onClose={() => setIsOpenEnd(false)}

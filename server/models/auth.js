@@ -68,7 +68,7 @@ export async function alreadyUsed(username, email) {
         }
         return result
 }
-export async function getUserInfo(token) {
+export async function getUserInfo(token) { // byToken
         const conn = await db;
         // Faire la requête SQL pour récupérer le token dans la base de données
         const sql = "SELECT * FROM Users WHERE token = ?";

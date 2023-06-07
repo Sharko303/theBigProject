@@ -32,7 +32,7 @@ export const Menu = () => {
     setIsActive(false);
   };
 
-  const scrollColorNav = () => {
+/*    const scrollColorNav = () => {
     let navbar = document.querySelector('.navbar');
     if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
       navbar.classList.add('navbar-scrolled');
@@ -43,7 +43,7 @@ export const Menu = () => {
       navbar.classList.add('navbar-dark');
     }
   }
-  window.addEventListener('scroll', scrollColorNav)
+  window.addEventListener('scroll', scrollColorNav)  */
   const open = () => {
     let navbar2 = document.querySelector('.navbar');
     navbar2.classList.add('navbar-scrolled');

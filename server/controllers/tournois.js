@@ -5,25 +5,51 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import sgMail from '@sendgrid/mail'
-
+import schedule from 'node-schedule';
 
 
 //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
 export async function creerTournois(request, response) {
   try {
-    const event = request.body;
-    //console.log(info.token)
-    let reqUser = await requete.getUserInfo(event.token)
-    //console.log("username" + reqUser.id)
-    event.user_creator = reqUser.user_id;
+    const event2 = request.body;
+    let cookie = await getCookie(event2.token, 'Authentification')
+    let reqUser = await requete.getUserInfo(cookie)
+    console.log("username" + reqUser.user_id)
+    event2.user_creator = reqUser.user_id;
     //console.log(info)
-    event.date_start = event.date_start.slice(0, 10)
-    event.date_end = event.date_end.slice(0, 10)
+    event2.date_start = event2.date_start.slice(0, 10)
+    event2.date_end = event2.date_end.slice(0, 10)
     let dateAjout = new Date()
     dateAjout = dateAjout.toISOString().slice(0, 19)
-    event.dateAjout = dateAjout
-    const tournois = await event.create(event);
+    event2.dateAjout = dateAjout
+    const tournois = await event.create(event2);
     console.log(tournois)
+    if (tournois) {
+      const dateDebut = new Date(event2.date_start); // Date de début du tournoi
+      console.log(dateDebut)
+      // Extraction des composants de l'heure (heures, minutes, secondes)
+      const heureDebutComponents = event2.heure.split(':');
+      const heures = parseInt(heureDebutComponents[0], 10);
+      const minutes = parseInt(heureDebutComponents[1], 10);
+
+      console.log(dateDebut.getFullYear(), dateDebut.getMonth(), dateDebut.getDate(), heures, minutes)
+
+      // Combinaison de la date de début et de l'heure de début en une seule valeur
+      const scheduleDate = new Date(dateDebut.getFullYear(), dateDebut.getMonth(), dateDebut.getDate(), heures, minutes);
+      console.log(scheduleDate);
+      schedule.scheduleJob(scheduleDate, async () => {
+        try {
+          // Appel de la fonction startTournois avec les paramètres nécessaires
+          let date = new Date();
+          console.log('Coucou mes loulous', reqUser);
+          console.log('tournois',tournois[0].event_id)
+          await startTournois(tournois[0].event_id);
+        } catch (error) {
+          console.log('Une erreur s\'est produite lors du démarrage du tournoi :', error);
+        }
+      });
+    }
+    //console.log(tournois)
     response.status(201).json({ status: 'success' });
   } catch (error) {
     console.error(error);
@@ -78,25 +104,35 @@ export async function rejoindreTournois(request, response) {
 
 export async function tableauParticipant(request, response) {
   try {
-    // Route pour récupérer les participants inscrits
-    // Code pour récupérer les participants depuis la base de données
-    // ...
     const id_tournois = request.params.numTournois;
-    const participants = await requete.getData('*', 'Participants', 'event_id', id_tournois);
-    const participantIds = participants.map(participant => participant.user_id);
-    console.log(participantIds)
-    const participantName = await requete.getDatas('*', 'Users', 'user_id', participantIds);
-    const participantNames = participantName.map(participant => participant.username);
+    const participants = await requete.getData('*', 'Matches', 'fk_events_id', id_tournois);
+    const matches = participants.map(participant => ({
+      joueur1: participant.fk_user1_id,
+      joueur2: participant.fk_user2_id
+    }));
 
+    const participantIds = matches.flatMap(pair => [pair.joueur1, pair.joueur2]);
+
+    const participantName = await requete.getDatas('*', 'Users', 'user_id', participantIds);
+
+    const getParticipantName = (participantId) => {
+      const participant = participantName.find(p => p.user_id === participantId);
+      return participant ? participant.username : '';
+    };
+
+    const participantNames = matches.map(pair => ({
+      joueur1: getParticipantName(pair.joueur1),
+      joueur2: getParticipantName(pair.joueur2)
+    }));
     console.log(participantNames)
-    console.log(participantIds)
-    response.status(200).json({ status: 'success', message: 'Participant récupéré', participantIds, participantNames });
+    response.status(200).json({ status: 'success', message: 'Participants récupérés', matches, participantNames });
   } catch (error) {
     console.error('Erreur lors de la récupération des participants :', error);
     response.status(500).json({ error: 'Erreur serveur lors de la récupération des participants' });
   }
 }
-export async function startTournois(heure, event_id, request, response) {
+
+export async function startTournois(event_id, request, response) {
   try {
     const getParticipants = await requete.getData('user_id', 'Participants', 'event_id', event_id);
     console.log(getParticipants);
@@ -106,15 +142,18 @@ export async function startTournois(heure, event_id, request, response) {
 
     const participantsCount = getParticipants.length;
     const pairCount = participantsCount / 2;
-
-    for (let i = 0; i < pairCount; i++) {
+    const participantsShuffle = shuffle(getParticipants)
+    console.log(participantsShuffle)
+     for (let i = 0; i < pairCount; i++) {
+      console.log(i, i + pairCount, participantsCount);
       const fkUser1Id = getParticipants[i].user_id;
       const fkUser2Id = getParticipants[i + pairCount].user_id;
 
       const values = [fkUser1Id, fkUser2Id, event_id, 0, 0, 0];
       const newMatch = await event.setData('Matches', colone, values);
       matches.push(newMatch);
-    }
+    } 
+    
 
     console.log('Matches créés :', matches);
 
@@ -148,3 +187,33 @@ export async function getHeuresDebutTournois(request, response, heure) {
   }
 }
 
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+export async function addScore(request, response) {
+  const eventId = requete.getData()
+  const heureChoisie = req.params.heureChoisie;
+
+  try {
+    const result = 'requete';
+    response.status(200).json({ message: 'Matches créés et stockés avec succès.' });
+  } catch (error) {
+    console.log('Une erreur s\'est produite lors de la génération des matches :', error);
+    response.status(500).json({ error: 'Une erreur s\'est produite lors de la génération des matches.' });
+  }
+}

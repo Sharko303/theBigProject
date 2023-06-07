@@ -8,3 +8,5 @@ npm i jsonwebtoken // pour les token donc pour les page non accessible sans conn
 npm install bcryptjs // notre algorithme de hash de mot de passe.
 npm install crypto // pour créer une clée secrete
 npm i @sendgrid/mail // pour l'envois de mail
+npm i node-cron // a voir
+npm i node-schedule

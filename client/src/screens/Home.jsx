@@ -86,7 +86,7 @@ export const Home = () => {
                                         {authenticationValue ? (
                                             <Row>
                                                 <Col>
-                                                    <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                    <Button href="/listetournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
                                                         Listes tournois
                                                     </span></Button>
                                                 </Col>
