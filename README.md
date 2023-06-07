@@ -27,29 +27,34 @@ Suivez les étapes ci-dessous pour installer et configurer le projet Big Competi
    npm install
    cd frontend
    npm install
+   ```
 2. Revenez au répertoire principal du projet en utilisant la commande suivante :
 
-cd ..
+    ```shell
+    cd ..
+    ```
 
 3. Créez un fichier de configuration pour le backend en dupliquant le fichier .env.example et en le renommant en .env :
 
-cp backend/.env.example backend/.env
+    ```shell
+    cp backend/.env.example backend/.env
+    ```
 
 4. Ouvrez le fichier .env dans un éditeur de texte et configurez les variables d'environnement selon vos besoins. Assurez-vous de configurer les informations de base de données et d'autres paramètres nécessaires.
 
-[Autres instructions d'installation ou de configuration si nécessaires]
+    [Autres instructions d'installation ou de configuration si nécessaires]
 
 5. Utilisation
 
-[Expliquez ici comment utiliser l'application une fois l'installation terminée. Vous pouvez inclure des exemples de commandes ou d'interactions avec l'application.]
+    [Expliquez ici comment utiliser l'application une fois l'installation terminée. Vous pouvez inclure des exemples de commandes ou d'interactions avec l'application.]
 
 6. Contributeurs
 
-[Listez les contributeurs ou indiquez comment les utilisateurs peuvent contribuer au projet.]
+    [Listez les contributeurs ou indiquez comment les utilisateurs peuvent contribuer au projet.]
 
 7. Licence
 
-[Indiquez la licence du projet, par exemple MIT, Apache, etc.]
+    [Indiquez la licence du projet, par exemple MIT, Apache, etc.]
 
 8. Remarques
 
