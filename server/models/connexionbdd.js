@@ -1,4 +1,4 @@
-import mariadb from 'mariadb';
+/* import mariadb from 'mariadb';
 
 const db = mariadb.createConnection({
     host: "146.59.196.181",
@@ -13,4 +13,4 @@ const db = mariadb.createConnection({
     console.error("Erreur de connexion à la base de données:", err);
   });
 
-export default db;
+export default db; */

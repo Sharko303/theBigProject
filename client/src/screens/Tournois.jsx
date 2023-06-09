@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { Bracket, BracketGame } from 'react-tournament-bracket';
 import { useLocation } from 'react-router-dom';
 import { ScoreForm } from "../components/ScoreForm"
+import { apiCall } from '../Javascript/apiCall';
 
 export const Tournois = () => {
   const [eliminationTable, setEliminationTable] = useState([]);
@@ -89,7 +90,12 @@ export const Tournois = () => {
   }, [id]);
 
   const fetchTournois = async (id) => {
-    try {
+    let response = await apiCall('GET', 'events')
+        if(response){
+            //toast
+            console.log(response);
+        }
+    /* try {
       console.log('NUMERO :', id);
       const response = await fetch(`http://localhost:8080/ws/tournois/${id}`);
       const data = await response.json();
@@ -106,7 +112,7 @@ export const Tournois = () => {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des tournois :', error);
-    }
+    } */
   };
 
   async function generateElimination(playerNames) {

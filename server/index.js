@@ -2,41 +2,70 @@ import * as loginController from './controllers/login.js';
 import * as tournoisController from './controllers/tournois.js';
 import express from 'express';
 import path from 'path';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 import cron from 'node-cron'
 import * as requete from './models/auth.js'
+import userController from './controllers/users.js';
+import eventController from './controllers/events.js';
+import userModel from './models/user.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 //app.use(history());
 const PORT = process.env.PORT || 3002;
 
 //app.use('/', proxy('http://192.168.8.155:3000'))
 app.use(express.static('public'))
 
-//app.use('/ws', cors());
-app.use('/ws', (req, res, next) => {
-  // if 
-  const origin = req.headers.origin;
-  res.set({
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Credentials": true,
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
-    "Access-Control-Allow-Headers": "Content-Type, *",
-  })
-  next();
+app.use('/ws', cors({
+  origin(origin, callback) {
+      callback(null, true)
+  },
+  credentials: true
+}))
+
+app.use('/ws', async (req, res, next) => {
+  if(req.method == 'POST' && req.path == '/users' || req.path == '/users/login' || req.path == '/users/confirm') {
+    next()
+    return
+  }
+
+  const token = req.cookies?.Authentification
+  if (token) {
+    req.user = (await userModel.getBy({token}))[0]
+    if (req.user) {
+      next()
+      return
+    }
+  }
+  res.status(401).json({message:'Vous devez être identifié'})
 });
 // Requête connexion et inscription 
-app.post('/ws/validatePassword', loginController.identification);
+/* app.post('/ws/validatePassword', loginController.identification); */
+/* app.post('/ws/validatePassword', userController.login); 
+
 app.post('/ws/inscription', loginController.inscription);
 
 //Requête création de tournois
 app.post('/ws/creertournois', tournoisController.creerTournois);
-app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
- app.post('/ws/addscore', tournoisController.addScore); 
+app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois); */
+
+
+app.post('/ws/users/login', userController.login);
+app.get('/ws/users/confirm', userController.confirmMail); 
+
+app.get('/ws/users/:id', userController.get);
+app.post('/ws/users', userController.post);
+
+app.get('/ws/events', eventController.getAll);
+app.get('/ws/events/:id', eventController.get);
 
 
 
@@ -54,12 +83,12 @@ app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois);
 })); */
 
 
-app.get('/ws/confirm-email', loginController.confirmMail);
+/* app.get('/ws/confirm-email', loginController.confirmMail);
 
 app.get('/ws/tournois/:numTournois', tournoisController.tableauParticipant);
 app.get('/ws/getTournois', tournoisController.listeTournois);
 app.get('/ws/users/:userId', loginController.getUserById);
-
+ */
 /* 
 app.get('*', (req, res) => {
 // if(), rediriger sur connexion

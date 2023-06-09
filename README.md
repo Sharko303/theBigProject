@@ -22,7 +22,7 @@ Suivez les étapes ci-dessous pour installer et configurer le projet Big Competi
 1. Clonez le référentiel du projet depuis GitHub, accédez au répertoire du projet, et installez les dépendances du backend et du frontend en exécutant les commandes suivantes :
 
    ```shell
-   git clone https://github.com/votre_utilisateur/big-competition.git
+   git clone https://github.com/Sharko303/theBigProject.git
    cd big-competition
    npm install
    cd frontend

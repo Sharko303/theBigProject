@@ -5,6 +5,8 @@ import { Theme } from '../components/Theme';
 import { Footer } from '../components/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { apiCall } from '../Javascript/apiCall';
+
 
 export const Inscription = () => {
     // on change le titre de notre page
@@ -31,8 +33,14 @@ export const Inscription = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(inscription.username, inscription.password, inscription.email);
-        try {
-            const response = await fetch("http://localhost:8080/ws/inscription", {
+        let response = await apiCall('POST', 'users', { 
+            username: inscription.username,
+            password: inscription.password,
+            passwordRetype: inscription.passwordRetype,
+            email: inscription.email, 
+        })
+        /* try {
+            const response = await fetch("http://localhost:8080/ws/users", {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
@@ -67,7 +75,7 @@ export const Inscription = () => {
             }
         } catch (error) {
             console.error(error);
-        }
+        } */
     };
 
     return (

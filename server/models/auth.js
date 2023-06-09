@@ -1,4 +1,4 @@
-import db from './connexionbdd.js';
+/* import db from './connexionbdd.js';
 
 export async function getSalt(username) {
         try {
@@ -164,4 +164,4 @@ export async function getDatas(colone, table, critere, values) {
                 console.error("Erreur lors de l'exécution de la requête SELECT:", err);
                 throw err;
         }
-}
+} */

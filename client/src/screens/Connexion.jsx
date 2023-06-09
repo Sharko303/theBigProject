@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
 import { getCookieValue } from '../components/Cookie';
-
+import { apiCall } from '../Javascript/apiCall';
 export const Connexion = () => {
+
+    const navigate = useNavigate();
     // on change le titre de notre page
     document.title = "E-Sport | Connexion";
 
@@ -22,35 +24,42 @@ export const Connexion = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(username, password);
-        try {
-            const response = await fetch("http://localhost:8080/ws/validatePassword", {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify({ username, password }),
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                // Stocker le token dans le stockage local du navigateur
-                localStorage.setItem('token', data.token);
-                // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
-                window.location.href = '/home?success=true';
-            } else {
-                // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
 
-                toast.error(data.message, {
+        let response = await apiCall('POST', 'users/login', { username, password })
+        console.log(response)
+            if (response) {
+                console.log('on redirige')
+                /* window.location.href = '/accueil' */
+                return navigate("/accueil");
+            } else {
+                console.log('on redirige pas wallah')
+                toast.error("Erreur lors de la connexion", {
                     position: toast.POSITION.TOP_RIGHT
                 });
             }
-        } catch (error) {
-            console.error(error);
-        }
+
+
+        /* try {
+           const response = await fetch("http://localhost:8080/ws/users/login", {
+               method: "POST",
+               credentials: "include",
+               headers: {
+                   "Content-Type": "application/json",
+               },
+               body: JSON.stringify({ username, password }),
+           });
+           if (response.ok) {
+
+           } else {
+               const data = await response.json();
+               toast.error(data.message, {
+                   position: toast.POSITION.TOP_RIGHT
+               });
+           }
+       } catch (error) {
+           console.error(error);
+       }  */
+
     };
     const location = useLocation();
 
