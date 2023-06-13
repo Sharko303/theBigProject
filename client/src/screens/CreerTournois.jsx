@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
 import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
 import { useLocation } from 'react-router-dom';
@@ -8,7 +9,9 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 /* import { DatePicker } from "react-responsive-datepicker"; */
 import { GameSelect } from '../components/GameSelect';
 import * as cookie from '../components/Cookie';
-import {BiJoystick} from 'react-icons/bi';
+import { BiJoystick } from 'react-icons/bi';
+import { apiCall } from '../Javascript/apiCall';
+import MyDatePicker from '../components/DatePicker';
 
 export const CreerTournois = () => {
     const [nomTournois, setNomTournois] = useState('');
@@ -20,9 +23,6 @@ export const CreerTournois = () => {
     const [selectedGame, setSelectedGame] = useState(""); // Ajouter un état pour la valeur sélectionnée
     //const today = new Date();
     // const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()); // Pour limiter la date 
-    useEffect(() => {
-        cookie.checkCookieAndRedirect();
-    }, []);
 
     //const token = localStorage.getItem('token');
     const token = document.cookie
@@ -35,17 +35,12 @@ export const CreerTournois = () => {
     };
 
     const handleDatePickerChangeStart = (date) => {
-        if (!date) { // check if date is null or undefined
+        if (!date) { // vérifier si la date est nulle ou indéfinie
             setIsOpenStart(false);
             setDateTournoisStart('');
         } else {
             setIsOpenStart(false);
-            /*             const formattedDate = date.toLocaleDateString('fr-FR',{
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        }); */
-            const formattedDate = date
+            const formattedDate = date.toISOString().slice(0, 10);
             setDateTournoisStart(formattedDate);
         }
     };
@@ -74,7 +69,16 @@ export const CreerTournois = () => {
     }
     const ajouterTournois = async (event) => {
         event.preventDefault();
-        console.log(nomTournois, selectedGame, dateTournoisStart, dateTournoisEnd, heureTournois, token);
+        const response = await apiCall('POST', 'events',
+            {
+                name: nomTournois,
+                game: selectedGame,
+                date_start: dateTournoisStart,
+                date_stop: dateTournoisEnd,
+                heure: heureTournois,
+                token: token,
+            })
+        /* console.log(nomTournois, selectedGame, dateTournoisStart, dateTournoisEnd, heureTournois, token);
 
         try {
             const response = await fetch("http://localhost:8080/ws/creertournois", {
@@ -115,7 +119,7 @@ export const CreerTournois = () => {
             }
         } catch (error) {
             console.error(error);
-        }
+        } */
     };
     return (
         <Container>
@@ -142,16 +146,16 @@ export const CreerTournois = () => {
                     <Form.Label column sm={2}>
                         Date début du Tournois :
                     </Form.Label>
-                    <Col sm={10}>
+                    {/* <Col sm={10}>
                         <Form.Control
-                            type="text"
+                            type="date"
                             placeholder="Entrez la date du Tournois"
                             value={dateTournoisStart ? new Date(dateTournoisStart) : ''}
                             onClick={handleInputClickStart}
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
-                        />
-                        {/* <DatePicker
+                        /> */}
+                    {/* <DatePicker
                             isOpen={isOpenStart}
                             title="Date de tournois"
                             onClose={() => setIsOpenStart(false)}
@@ -164,21 +168,24 @@ export const CreerTournois = () => {
                             clickOutsideToClose={() => setIsOpenStart(false)}
                             yearDropdownItemNumber={2}
                         /> */}
+                    <Col sm={10}>
+                        <MyDatePicker selectedDate={dateTournoisStart} onChange={(date) => setDateTournoisStart(date)} />
                     </Col>
+                    {/* </Col> */}
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Form.Label column sm={2}>
                         Date fin du Tournois :
                     </Form.Label>
                     <Col sm={10}>
-                        <Form.Control
+                        {/* <Form.Control
                             type="text"
                             placeholder="Entrez la date du Tournois"
                             value={dateTournoisStart ? new Date(dateTournoisStart) : ''}
                             onClick={handleInputClickStart}
                             onChange={(e) => setDateTournoisStart(e.target.value)}
                             required
-                        />
+                        /> */}
                         {/*  <DatePicker
                             isOpen={isOpenEnd}
                             title="Date de tournois"
@@ -192,6 +199,9 @@ export const CreerTournois = () => {
                             clickOutsideToClose={() => setIsOpenEnd(false)}
                             yearDropdownItemNumber={2}
                         /> */}
+
+                        <MyDatePicker selectedDate={dateTournoisEnd} onChange={(date) => setDateTournoisEnd(date)} />
+
                     </Col>
                 </Form.Group>
 

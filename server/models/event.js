@@ -25,4 +25,7 @@ export default {
     });
     return events
   },
+  join: async function (participants) {
+    return await participantModel.create(participants)
+  }
 }

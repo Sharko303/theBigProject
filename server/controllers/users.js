@@ -2,12 +2,12 @@ import { handleError, createController } from './controller.js'
 
 // J'importe le model qui va bien
 import model from '../models/user.js'
-import * as requete from '../models/auth.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import sgMail from '@sendgrid/mail'
 import dotenv from 'dotenv';
+
 dotenv.config()
 
 const controller = createController(model)
@@ -58,7 +58,7 @@ export default {
         if (username && password && email && password == passwordRetype) {
             const possibleExistingUser = await model.getBy({ username, email })
             if (possibleExistingUser.length > 0) {
-                response.status(401).json({ status: 'error', message: 'Erreur : nom de compte ou adresse mail déjà utilisé' });
+                res.status(401).json({ status: 'error', message: 'Erreur : nom de compte ou adresse mail déjà utilisé' });
                 return
             }
 

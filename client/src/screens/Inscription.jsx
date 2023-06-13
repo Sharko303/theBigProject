@@ -39,43 +39,19 @@ export const Inscription = () => {
             passwordRetype: inscription.passwordRetype,
             email: inscription.email, 
         })
-        /* try {
-            const response = await fetch("http://localhost:8080/ws/users", {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify({
-                    username: inscription.username,
-                    password: inscription.password,
-                    passwordRetype: inscription.passwordRetype,
-                    email: inscription.email,
-                }),
+        if(response){
+             // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
+            
+            console.log("inscrit")
+            toast.success('Inscription effectué, un mail de confirmation vous a été envoyez', {
+                position: toast.POSITION.TOP_RIGHT
             });
-            const data = await response.json();
-            if (data.status === 'success') {
-                // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
-                //window.location.href = '/home';
-                console.log("inscrit")
-                toast.success('Inscription effectué, un mail de confirmation vous a été envoyez', {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-            } else {
-                // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
-                console.log('Non inscrit :', data.message);
-
-                toast.error(data.message, {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-            }
-        } catch (error) {
-            console.error(error);
-        } */
+        }else {
+             // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
+             toast.error(response.message, {
+                 position: toast.POSITION.TOP_RIGHT
+             });
+        }
     };
 
     return (

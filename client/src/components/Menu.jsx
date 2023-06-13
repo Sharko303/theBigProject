@@ -1,16 +1,16 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
 import * as cookie from '../components/Cookie';
 //import { Theme } from './Theme';
-
+import UserContext from './UserContext';
 export const Menu = () => {
   const token = document.cookie;
 
-
+  const user = useContext(UserContext);
 /*   function focusMenu() {
     let navbar = document.querySelector('.navbar');
     if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
@@ -87,7 +87,7 @@ const MyNavbar = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" id="mobile" />
         <Navbar.Collapse className='w-100 align-items-center justify-content-center' id="navbarNav">
-          {token ? (
+          {user ? (
              <Nav className="mt-5">
               <Nav.Link
                 as={Link}

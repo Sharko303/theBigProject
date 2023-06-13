@@ -30,7 +30,7 @@ export const Connexion = () => {
             if (response) {
                 console.log('on redirige')
                 /* window.location.href = '/accueil' */
-                return navigate("/accueil");
+                return navigate("/home?success=true");
             } else {
                 console.log('on redirige pas wallah')
                 toast.error("Erreur lors de la connexion", {

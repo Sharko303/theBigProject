@@ -3,24 +3,28 @@ import { Footer } from '../components/Footer';
 import { RocketValoCaroussel } from '../components/RocketValoCaroussel';
 import Img from '../images/fond-violet.webp'
 import { useLocation } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiGroup, BiUserCircle, BiLogOut, BiJoystick } from 'react-icons/bi';
 import * as cookie from '../components/Cookie';
+import UserContext from './../components/UserContext';
+
 
 export const Home = () => {
     //checkCookieAndRedirect()
     // on change le titre de notre page
     document.title = "E-Sport | Accueil";
-    const authenticationValue = document.cookie;
+
+    const user = useContext(UserContext);
 
     // on récupère les paramètres de notre url
     const location = useLocation();
 
     // on récupère le token
     const token = localStorage.getItem('token');
+
 
     let countToast = 0; // on compte les toast pour éviter d'en avoir plus d'1
 
@@ -33,9 +37,27 @@ export const Home = () => {
             countToast = 1
         }
     }, [location.search]);
+    /*     useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await apiCall('GET', 'users/me');
+                    setUser(response);
+                } catch (error) {
+                    // Gérer les erreurs de l'appel API
+                    console.log(error);
+                }
+            };
+    
+            fetchData();
+            console.log(user)
+        }, []); */
 
     return (
         <div>
+            <UserContext.Provider value={user}>
+                {/* Le reste de votre composant */}
+            </UserContext.Provider>
+
             <header>
                 <Menu />
             </header>
@@ -83,7 +105,7 @@ export const Home = () => {
                                 <Col lg='4' md='4'>
                                     <Container className='home-right content-home-no-mobile'>
 
-                                        {authenticationValue ? (
+                                        {user ? (
                                             <Row>
                                                 <Col>
                                                     <Button href="/listetournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
@@ -158,8 +180,10 @@ export const Home = () => {
 
                 </Row>
             </Container>
+            {user ? (
+                <ToastContainer />
+            ) : null}
 
-            <ToastContainer />
 
 
 

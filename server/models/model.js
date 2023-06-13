@@ -23,7 +23,7 @@ export function createModel(table) {
       }
     },
 
-    getBy: async function (params){
+    getBy: async function (params) {
       const conn = await getConnection()
       const condition = Object.keys(params).map((colName) => `${conn.escapeId(colName)} = ?`).join(' AND ')
       const values = Object.values(params)

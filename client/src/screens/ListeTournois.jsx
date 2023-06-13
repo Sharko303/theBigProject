@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card, Button, ListGroup, Container, Row, Col } from 'react-bootstrap';
 import { Menu } from '../components/Menu';
 import { Footer } from '../components/Footer';
@@ -8,11 +8,13 @@ import { BiPlus } from 'react-icons/bi';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { apiCall } from '../Javascript/apiCall';
-
+import UserContext from './../components/UserContext';
 export const ListeTournois = () => {
     const [tournois, setTournois] = useState([]);
     const [tournoisInscrits, setTournoisInscrits] = useState([]);
 
+    const user = useContext(UserContext);
+    console.log(user)
     useEffect(() => {
         fetchTournois();
     }, []);
@@ -49,22 +51,24 @@ export const ListeTournois = () => {
          } */
     };
     const rejoindreTournoi = async (tournoiId) => {
-        const response = await fetch("http://localhost:8080/ws/rejoindretournois", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify({
-                token: document.cookie,
-                tournois_id: tournoiId
-            }),
-        });
-        const data = await response.json();
+        console.log(tournoiId);
+        let response = apiCall('POST', 'events/join', {
+            tournois_id: tournoiId
+        })
+
+        if(response) {
+            console.log("Success rejoin !");
+            toast.success('Création de nouveau tournois effectué !', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }else {
+            console.log('Echec lors de l inscription au tournois veuillez réessayer :');
+
+            toast.error("Problème lors de l'inscription au tournois.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+        /* const data = await response.json();
         if (data.status === 'success') {
             // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
             //window.location.href = '/home';
@@ -81,7 +85,7 @@ export const ListeTournois = () => {
             });
         }
         // Logique pour rejoindre le tournoi avec l'ID donné
-        console.log('Rejoindre tournoi avec ID :', tournoiId);
+        console.log('Rejoindre tournoi avec ID :', tournoiId); */
     };
 
     let estInscrit
@@ -118,11 +122,11 @@ export const ListeTournois = () => {
                             <img className='' />
                         </Col>
                         {tournois.map((tournoi) => {
-                            const estInscrit = tournoisInscrits.includes(tournoi.event_id);
+                            const estInscrit = tournoisInscrits.includes(tournoi.id);
 
                             return (
                                 <Col lg={6} md="12">
-                                    <Card className="mt-5 card-yellow" key={tournoi.event_id}>
+                                    <Card className="mt-5 card-yellow" key={tournoi.id}>
                                         <Card.Body>
                                             <Card.Title>{tournoi.name}</Card.Title>
                                             <ListGroup className="list-group-flush list-group-tournois">
@@ -139,12 +143,12 @@ export const ListeTournois = () => {
                                                 </Button>
                                             ) : (
                                                 <div>
-                                                    <Button variant="success" onClick={() => rejoindreTournoi(tournoi.event_id)}>
+                                                    <Button variant="success" onClick={() => rejoindreTournoi(tournoi.id)}>
                                                         Rejoindre
                                                     </Button>
                                                 </div>
                                             )}
-                                            <Link to={`/tournois?id=${tournoi.event_id}`} className='btn btn-info'>
+                                            <Link to={`/tournois?id=${tournoi.id}`} className='btn btn-info'>
                                                 Voir
                                             </Link>
                                             <hr />
