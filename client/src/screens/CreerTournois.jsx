@@ -123,11 +123,11 @@ export const CreerTournois = () => {
     };
     return (
         <Container>
-            <Col>
+            {/* <Col>
                 <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiJoystick className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
                     Listes tournois
                 </span></Button>
-            </Col>
+            </Col> */}
             <h1>Créer un Tournois</h1>
             <Form onSubmit={(e) => {
                 e.preventDefault();

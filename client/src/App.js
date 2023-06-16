@@ -42,6 +42,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/home' element={<Home />} />
           <Route path='/connexion' element={<Connexion />} />
+          <Route path='/inscription' element={<Inscription />} />
 
           {/* Afficher les pages accessibles aux utilisateurs connectés */}
           <Route path='/creertournois' element={<CreerTournois />} />

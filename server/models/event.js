@@ -8,11 +8,12 @@ export default {
   ...model,
 
   get: async function (id) {
-    const event = model.get(id)
+    const event = await model.get(id)
     if (event == false) {
       return false
     }
     event.user_ids = (await participantModel.getBy({ event_id: id })).map(row => row.user_id)
+    return event
   },
   getAll: async function () {
     const events = await model.getAll()

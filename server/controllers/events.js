@@ -1,17 +1,78 @@
 import { handleError, createController } from './controller.js'
 // J'importe le model qui va bien
 import participantModel from '../models/participant.js'
+import matchModel from '../models/match.js'
+
 import model from '../models/event.js'
 /* const participantModel = createModel('Participants') */
 import schedule from 'node-schedule';
 
 const controller = createController(model)
- const controllerParticipant = createController(participantModel)
-
+const controllerParticipant = createController(participantModel)
+const self = this;
 // J'exporte mon modèle
+async function start(event_id) {
+    try {
+        const event = await model.get(event_id);
+        const participants = event.user_ids
+        console.log("participants :",participants)
+        if (participants.length > 1) {
+
+            //const colone = ['fk_user1_id', 'fk_user2_id', 'fk_events_id', 'score_player1', 'score_player2', 'score_confirmed'];
+            const matches = [];
+            const match = {
+                fk_user1_id: null,
+                fk_user2_id: null,
+                fk_events_id: event_id,
+                score_player1: 0,
+                score_player2: 0,
+                score_confirmed: 0
+            };
+
+            const participantsCount = participants.length;
+            const pairCount = participantsCount / 2;
+            const participantsShuffle = shuffle(participants)
+            console.log(participantsShuffle)
+            for (let i = 0; i < pairCount; i++) {
+                console.log(i, i + pairCount, participantsCount);
+                match.fk_user1_id = participants[i];
+                match.fk_user2_id = participants[i + pairCount];
+
+                /* const values = [fkUser1Id, fkUser2Id, event_id, 0, 0, 0]; */
+                const newMatch = await matchModel.create(match);
+                matches.push(newMatch);
+            }
+
+
+            console.log('Matches créés :', matches);
+        }else {
+            console.log('pas assez de participants')
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des participants :', error);
+    }
+}
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+
 export default {
     ...controller,
-/*     ...controllerParticipant, */
+    /*     ...controllerParticipant, */
 
     post: async function (req, res) {
 
@@ -37,7 +98,7 @@ export default {
         console.log("tournois : ", tournois)
         if (tournois) {
             const dateDebut = new Date(event2.date_start); // Date de début du tournoi
-            console.log(dateDebut)
+            console.log("dateDebut : ", dateDebut)
             // Extraction des composants de l'heure (heures, minutes, secondes)
             const heureDebutComponents = event2.heure.split(':');
             const heures = parseInt(heureDebutComponents[0], 10);
@@ -47,28 +108,27 @@ export default {
 
             // Combinaison de la date de début et de l'heure de début en une seule valeur
             const scheduleDate = new Date(dateDebut.getFullYear(), dateDebut.getMonth(), dateDebut.getDate(), heures, minutes);
-            console.log('normalement sa lance a :', scheduleDate);
+            const scheduleDateString = scheduleDate.toLocaleString();
+            console.log('normalement ça démarre à :', scheduleDateString);
             const reqUser = req.user.id;
-            
+            console.log("this :", this)
             schedule.scheduleJob(scheduleDate, async () => {
                 try {
                     // Appel de la fonction startTournois avec les paramètres nécessaires
-                    let date = new Date();
-                    console.log('Coucou mes loulous', reqUser);
-                    console.log('tournois', tournois.event_id)
-                    await start(tournois[0].event_id);
+                    console.log('DEBUT DANS SCHEDULE');
+                    await start(tournois.id);
                 } catch (error) {
                     console.log('Une erreur s\'est produite lors du démarrage du tournoi :', error);
                 }
             });
-            res.json({message:"Votre tournois a bien été créer"})
-        }else {
-            response.status(500).json({ status: 'error', message: "Création impossible" })
+            res.json({ message: "Votre tournois a bien été créer" })
+        } else {
+            res.status(500).json({ status: 'error', message: "Création impossible" })
         }
     },
-    start: async function (event_id, request, response) {
+    start: async function (req, res) {
         try {
-
+            const event_id = req.body.id
             const getParticipants = await model.getBy(event_id);
             console.log(getParticipants);
 
@@ -114,9 +174,32 @@ export default {
             event_id: participant.tournois_id
         }
 
-        let join = await controllerParticipant.post(req,res); 
-        if(join){
+        let join = await controllerParticipant.post(req, res);
+        if (join) {
             res
+        }
+    },
+    score: async function (req, res) {
+        const body = request.body
+        const score1 = body.score1
+        const score2 = body.score2
+        const score = []
+        score[0] = score1;
+        score[1] = score2;
+        /* const result = {
+            score_player1:,
+            score_player2:,
+            score_confirmed:,
+        } */
+        let colone = ['score_player1', 'score_player2']
+        console.log(score1, score2)
+
+        try {
+            const result = await event.setData('Matches', score, colone)
+            response.status(200).json({ message: 'Matches créés et stockés avec succès.' });
+        } catch (error) {
+            console.log('Une erreur s\'est produite lors de la génération des matches :', error);
+            response.status(500).json({ error: 'Une erreur s\'est produite lors de la génération des matches.' });
         }
     }
 }

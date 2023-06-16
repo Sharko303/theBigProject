@@ -14,6 +14,9 @@ import { apiCall } from '../Javascript/apiCall';
 
 export const Tournois = () => {
   const [eliminationTable, setEliminationTable] = useState([]);
+  const [score1, setScore1] = useState('');
+  const [score2, setScore2] = useState('');
+
   const game1 = {
     id: "1",
     name: "semi-finals",
@@ -87,14 +90,20 @@ export const Tournois = () => {
       fetchTournois(id);
     }
 
-  }, [id]);
+  }, []);
 
   const fetchTournois = async (id) => {
-    let response = await apiCall('GET', 'events')
-        if(response){
-            //toast
-            console.log(response);
-        }
+    let response = await apiCall('GET', `events/${id}`)
+    if (response) {
+      //toast
+      console.log('test', response);
+      const participants = response.user_ids;
+      const participantNames = response.participantNames;
+      console.log('participants:', participants);
+      console.log('participantNames:', participantNames);
+      const eliminationTable = await generateElimination(participants);
+      setEliminationTable(eliminationTable);
+    }
     /* try {
       console.log('NUMERO :', id);
       const response = await fetch(`http://localhost:8080/ws/tournois/${id}`);
@@ -115,109 +124,143 @@ export const Tournois = () => {
     } */
   };
 
-  async function generateElimination(playerNames) {
+  function generateElimination(playerNames) {
     let matches = [];
 
-    // Create matches for each pair
-    for (let i = 0; i < playerNames.length; i++) {
-      const pair = playerNames[i];
-      const player1Name = pair.joueur1;
-      const player2Name = pair.joueur2;
+    const getCurrentDate = () => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
 
-      const match = {
-        id: i + 1,
-        name: "semi-finals",
-        scheduled: new Date().toLocaleDateString(),
-        players: [],
-        winner: null,
-        sides: {
-          home: {
-            team: {
-              id: null,
-              name: player1Name,
-            },
-            score: {
-              score: 0,
-            },
-          },
-          visitor: {
-            team: {
-              id: null,
-              name: player2Name,
-            },
-            score: {
-              score: 0,
-            },
-          },
-        },
-      };
-      matches.push(match);
-    }
-
-    // Generate matches for subsequent rounds
-    while (playerNames.length > 1) {
-      const newPlayerNames = [];
-      for (let i = 0; i < playerNames.length; i += 2) {
-        const pair1 = playerNames[i];
-        const pair2 = playerNames[i + 1];
-
-        if (pair2) {
-          // Check if winners from previous matches are available
-          const playerName1 = pair1.winner ? pair1.name : "";
-          const playerName2 = pair2.winner ? pair2.name : "";
-
-          const match = {
-            id: i + 1,
-            players: [],
-            winner: null,
-            sides: {
-              home: {
-                team: {
-                  id: null,
-                  name: playerName1,
-                },
-                score: {
-                  score: 0,
-                },
+    // Helper function to generate matches recursively
+    const generateMatches = (players) => {
+      if (players.length === 1) {
+        // Single player remains, the winner
+        return {
+          id: 1,
+          name: "finals",
+          scheduled: getCurrentDate(),
+          players: [],
+          winner: null,
+          sides: {
+            home: {
+              team: {
+                id: null,
+                name: players[0],
               },
-              visitor: {
-                team: {
-                  id: null,
-                  name: playerName2,
-                },
-                score: {
-                  score: 0,
-                },
+              score: {
+                score: 0,
               },
             },
-          };
-          newPlayerNames.push({ joueur1: playerName1, joueur2: playerName2 });
-          matches.push(match);
-        } else {
-          // Handle odd number of players, bye for one player
-          newPlayerNames.push(pair1);
-        }
+            visitor: {
+              team: {
+                id: null,
+                name: "",
+              },
+              score: {
+                score: 0,
+              },
+            },
+          },
+        };
       }
-      playerNames = [...newPlayerNames];
-    }
+
+      const newPlayers = [];
+      const numMatches = Math.ceil(players.length / 2);
+
+      for (let i = 0; i < numMatches; i++) {
+        const player1Name = players[i * 2] || "";
+        const player2Name = players[i * 2 + 1] || "";
+
+        const match = {
+          id: i + 1,
+          name: "semi-finals",
+          scheduled: getCurrentDate(),
+          players: [],
+          winner: null,
+          sides: {
+            home: {
+              team: {
+                id: null,
+                name: player1Name,
+              },
+              score: {
+                score: 0,
+              },
+            },
+            visitor: {
+              team: {
+                id: null,
+                name: player2Name,
+              },
+              score: {
+                score: 0,
+              },
+            },
+          },
+        };
+        matches.push(match);
+
+        const winnerName = ""; // Placeholder for the winner of the match
+        newPlayers.push(winnerName);
+      }
+
+      return generateMatches(newPlayers);
+    };
+
+    generateMatches(playerNames);
 
     return matches;
   }
+
   console.log('eliminationTable[0] :', eliminationTable[0])
   console.log('autre', game1)
   console.log('eliminationTable :', eliminationTable)
-
+  /* console.log("matches : ",match) */
 
   const [score, setScore] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Faites quelque chose avec le score, comme l'envoyer à votre backend
-    console.log('Score soumis :', score);
+  const handleScore1Change = (event) => {
+    setScore1(event.target.value);
   };
 
-  const handleScoreChange = (event) => {
-    setScore(event.target.value);
+  const handleScore2Change = (event) => {
+    setScore2(event.target.value);
+  };
+
+
+  const handleSubmitScore = async (event) => {
+    event.preventDefault();
+  
+    const data = {
+      score1: score1,
+      score2: score2
+    };
+  
+    try {
+      const response = await fetch('http://localhost:8080/ws/addscore/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      const dataReturn = await response.json();
+
+      if (dataReturn.status === 'success') {
+        // Le score a été soumis avec succès
+        console.log('Scores soumis avec succès');
+        // Effectuez ici toute autre action nécessaire après l'envoi des scores
+      } else {
+        console.log('Une erreur s\'est produite lors de la soumission des scores');
+      }
+    } catch (error) {
+      console.log('Une erreur s\'est produite lors de la soumission des scores :', error);
+    }
   };
   return (
     <div>
@@ -237,6 +280,30 @@ export const Tournois = () => {
           <p>Tournois INTROUVABLE !</p>
         )}
       </Container>
+      {/* Saisie de score*/} 
+      <Form onSubmit={handleSubmitScore}>
+        <Form.Group controlId="score1">
+          <Form.Label>Saisir le score 1 :</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Entrez le score 1"
+            value={score1}
+            onChange={handleScore1Change}
+          />
+        </Form.Group>
+        <Form.Group controlId="score2">
+          <Form.Label>Saisir le score 2 :</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Entrez le score 2"
+            value={score2}
+            onChange={handleScore2Change}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Soumettre
+        </Button>
+      </Form>
       <ScoreForm />
     </div>
   );

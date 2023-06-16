@@ -37,11 +37,11 @@ export function createModel(table) {
 
     create: async function (entity) {
       const conn = await getConnection()
-
       const colNames = Object.keys(entity).map((col) => conn.escapeId(col)).join(', ')
       const values = Object.values(entity)
       const placeholder = Array(values.length).fill('?').join(', ')
       const res = await conn.query(`INSERT INTO ${conn.escapeId(table)} (${colNames}) VALUES (${placeholder})`, values)
+      const testGet = await this.get(res.insertId)
       return await this.get(res.insertId)
     },
 
@@ -49,7 +49,6 @@ export function createModel(table) {
       const conn = await getConnection()
       const setters = Object.keys(entity).map((colName) => `${conn.escapeId(colName)} = ?`).join(', ')
       const values = Object.values(entity)
-
       await conn.query(`UPDATE ${conn.escapeId(table)} SET ${setters} WHERE id = ?`, [...values, id])
       return await this.get(id)
     },

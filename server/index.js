@@ -59,6 +59,7 @@ app.post('/ws/rejoindretournois', tournoisController.rejoindreTournois); */
 
 
 app.post('/ws/users/login', userController.login);
+app.post('/ws/users/logout', userController.logout);
 app.get('/ws/users/confirm', userController.confirmMail); 
 
 app.get('/ws/users/:id', userController.get);

@@ -16,10 +16,10 @@ const controller = createController(model)
 export default {
     ...controller,
 
-    login: async function (request, response) {
-        const { username, password } = request.body || {};
+    login: async function (req, res) {
+        const { username, password } = req.body || {};
         if (!username || !password) {
-            response.status(401).json({ status: 'error', message: 'Entrez un nom de compte et un mot de passe !' });
+            res.status(401).json({ status: 'error', message: 'Entrez un nom de compte et un mot de passe !' });
             return;
         }
 
@@ -27,26 +27,43 @@ export default {
             const user = (await model.getBy({ username }))[0];
             if (user) {
                 if (await bcrypt.compare(password, user.password)) {
-                    response.cookie("Authentification", user.token, {
+                    res.cookie("Authentification", user.token, {
                         maxAge: 36000 * 24 * 365,
                         httpOnly: true
                     })
-                    response.status(200).json({ token: user.token });
+                    res.status(200).json({ token: user.token });
                     return;
                 }
             }
-            response.status(401).json({ status: 'error', message: "Mauvais mot de passe ou utilisateur" });
+            res.status(401).json({ status: 'error', message: "Mauvais mot de passe ou utilisateur" });
         } catch (err) {
             console.log(err)
-            response.status(500).json({ status: 'error', message: "server error" });
+            res.status(500).json({ status: 'error', message: "server error" });
         }
     },
+    logout: async function (req, res) {
+        console.log("JE SUIS LA ZEBI")
+        // Supprimer le cookie d'authentification en réglant sa date d'expiration à une date passée
+        res.clearCookie('Authentification');
 
+        // Mettre à jour le champ token de l'utilisateur en le définissant sur null
+        const token = req.cookies?.Authentification;
+        console.log("token :",token);
+/*         if (token) {
+            await model.update(req.user.id, { token: null });
+        } */
+
+        // Envoyer une réponse indiquant que l'utilisateur a été déconnecté avec succès
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    },
     get: async function (req, res) {
         if (req.params.id == 'me') {
+            console.log(req.user)
+            delete req.user.token
+            delete req.user.password
             res.json(req.user)
         } else {
-            controller.get(req,res)
+            controller.get(req, res)
         }
     },
 
@@ -108,10 +125,10 @@ export default {
         const token = req.query.token;
         try {
             //await requete.getToken(token)
-            const user = (await model.getBy({token}))[0];
+            const user = (await model.getBy({ token }))[0];
             if (!user) {
                 //res.redirect('/connexion?error=inexistant');
-                res.status(400).json({message:"Lien invalide"})
+                res.status(400).json({ message: "Lien invalide" })
                 return;
             }
             const newVal = {
@@ -120,11 +137,11 @@ export default {
             };
             await model.update(user.id, newVal);
             /* res.redirect('/connexion?success=true'); */
-            res.json({message:"Votre utilisateur a bien été validé, vous pouvez fermer cette fenetre et vous connecter via l'interface"})
+            res.json({ message: "Votre utilisateur a bien été validé, vous pouvez fermer cette fenetre et vous connecter via l'interface" })
         } catch (error) {
             /* res.redirect('/connexion?error=true'); */
             console.log(error)
-            res.status(400).json({message:"Lien invalide 2"})
+            res.status(400).json({ message: "Lien invalide 2" })
         }
     }
 }

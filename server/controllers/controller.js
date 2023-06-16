@@ -1,6 +1,6 @@
 // Petite fonciton pratique
 export function handleError(error, res) {
-  console.log(error)
+  console.error(error)
     if (error.constructor.name == "SqlError") {
       res.status(400).json({ message: `L'opération n'a pas pu aboutir à cause de vos données pérave, pauv' tâche !`})
     } else {

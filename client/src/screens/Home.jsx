@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BiGroup, BiUserCircle, BiLogOut, BiJoystick } from 'react-icons/bi';
 import * as cookie from '../components/Cookie';
 import UserContext from './../components/UserContext';
-
+import { apiCall } from '../Javascript/apiCall';
 
 export const Home = () => {
     //checkCookieAndRedirect()
@@ -51,7 +51,16 @@ export const Home = () => {
             fetchData();
             console.log(user)
         }, []); */
-
+const handleLogout = () => {
+    const response = apiCall('POST', 'users/logout')
+    /* if (response) {
+      
+    } else {
+      toast.error("ERREUR ! Lors de la déconnexion", {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } */
+}
     return (
         <div>
             <UserContext.Provider value={user}>
@@ -114,7 +123,7 @@ export const Home = () => {
                                                 </Col>
 
                                                 <Col>
-                                                    <Button className='btn btn-lg w-100 btn-danger content-home-no-mobile text-dark' href="/" onClick={cookie.delCookie}><BiLogOut /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                                    <Button className='btn btn-lg w-100 btn-danger content-home-no-mobile text-dark' href="/" onClick={handleLogout}><BiLogOut /> <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
                                                         Déconnexion
                                                     </span></Button>
                                                 </Col>

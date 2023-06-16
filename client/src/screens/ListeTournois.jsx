@@ -16,7 +16,7 @@ export const ListeTournois = () => {
     const user = useContext(UserContext);
     console.log(user)
     useEffect(() => {
-        fetchTournois();
+            fetchTournois();
     }, []);
 
     const fetchTournois = async () => {
@@ -56,12 +56,12 @@ export const ListeTournois = () => {
             tournois_id: tournoiId
         })
 
-        if(response) {
+        if (response) {
             console.log("Success rejoin !");
             toast.success('Création de nouveau tournois effectué !', {
                 position: toast.POSITION.TOP_RIGHT
             });
-        }else {
+        } else {
             console.log('Echec lors de l inscription au tournois veuillez réessayer :');
 
             toast.error("Problème lors de l'inscription au tournois.", {
@@ -93,74 +93,80 @@ export const ListeTournois = () => {
     return (
         <div>
             <Menu />
-            <Container fluid className='body-space ' >
+            {user ? (
+                <Container fluid className='body-space ' >
 
-                <div className="hero-section"
-                    style={{
-                        paddingTop: '50px',
-                        backgroundImage: `url(${Img})`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        height: '100%',
-                        backgroundAttachment: 'fixed',
-                    }}>
-                    <Row>
-                        <Col lg={8} md={4}>
-                            <Container className="text-center" >
-                                <Card className='bg-warning'>
-                                    <Card.Title><h1>Liste de tournois</h1></Card.Title>
-                                </Card>
-                            </Container>
-
-                        </Col>
-                        <Col lg={4}>
-                            <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiPlus className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
-                                Créer un tournois
-                            </span></Button>
-                        </Col>
-                        <Col lg={4}>
-                            <img className='' />
-                        </Col>
-                        {tournois.map((tournoi) => {
-                            const estInscrit = tournoisInscrits.includes(tournoi.id);
-
-                            return (
-                                <Col lg={6} md="12">
-                                    <Card className="mt-5 card-yellow" key={tournoi.id}>
-                                        <Card.Body>
-                                            <Card.Title>{tournoi.name}</Card.Title>
-                                            <ListGroup className="list-group-flush list-group-tournois">
-                                                <ListGroup.Item>Jeu : {tournoi.game}</ListGroup.Item>
-                                                <ListGroup.Item>Date de début : {tournoi.date_start}</ListGroup.Item>
-                                                {/* <ListGroup.Item>Date de fin : {tournoi.date_stop}</ListGroup.Item> */}
-                                                <ListGroup.Item>Heure de début : {tournoi.heure}</ListGroup.Item>
-                                                <ListGroup.Item>Créé par : {tournoi.user_creator}</ListGroup.Item>
-                                            </ListGroup>
-
-                                            {estInscrit ? (
-                                                <Button variant="danger" onClick={() => console.log("on quitte")}>
-                                                    Quitter
-                                                </Button>
-                                            ) : (
-                                                <div>
-                                                    <Button variant="success" onClick={() => rejoindreTournoi(tournoi.id)}>
-                                                        Rejoindre
-                                                    </Button>
-                                                </div>
-                                            )}
-                                            <Link to={`/tournois?id=${tournoi.id}`} className='btn btn-info'>
-                                                Voir
-                                            </Link>
-                                            <hr />
-                                        </Card.Body>
+                    <div className="hero-section"
+                        style={{
+                            paddingTop: '50px',
+                            backgroundImage: `url(${Img})`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "cover",
+                            height: '100%',
+                            backgroundAttachment: 'fixed',
+                        }}>
+                        <Row>
+                            <Col lg={8} md={4}>
+                                <Container className="text-center" >
+                                    <Card className='bg-warning'>
+                                        <Card.Title><h1>Liste de tournois</h1></Card.Title>
                                     </Card>
-                                </Col>
-                            );
-                        })}
+                                </Container>
 
-                    </Row>
-                </div>
-            </Container>
+                            </Col>
+                            <Col lg={4}>
+                                <Button href="/creertournois" className='btn btn-lg w-100 btn-success content-home-no-mobile text-black'><BiPlus className='mr-3' /><span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
+                                    Créer un tournois
+                                </span></Button>
+                            </Col>
+                            <Col lg={4}>
+                                <img className='' />
+                            </Col>
+                            {tournois.map((tournoi) => {
+                                const estInscrit = tournoisInscrits.includes(tournoi.id);
+
+                                return (
+                                    <Col lg={6} md="12">
+                                        <Card className="mt-5 card-yellow" key={tournoi.id}>
+                                            <Card.Body>
+                                                <Card.Title>{tournoi.name}</Card.Title>
+                                                <ListGroup className="list-group-flush list-group-tournois">
+                                                    <ListGroup.Item>Jeu : {tournoi.game}</ListGroup.Item>
+                                                    <ListGroup.Item>Date de début : {tournoi.date_start}</ListGroup.Item>
+                                                    {/* <ListGroup.Item>Date de fin : {tournoi.date_stop}</ListGroup.Item> */}
+                                                    <ListGroup.Item>Heure de début : {tournoi.heure}</ListGroup.Item>
+                                                    <ListGroup.Item>Créé par : {tournoi.user_creator}</ListGroup.Item>
+                                                </ListGroup>
+
+                                                {estInscrit ? (
+                                                    <Button variant="danger" onClick={() => console.log("on quitte")}>
+                                                        Quitter
+                                                    </Button>
+                                                ) : (
+                                                    <div>
+                                                        <Button variant="success" onClick={() => rejoindreTournoi(tournoi.id)}>
+                                                            Rejoindre
+                                                        </Button>
+                                                    </div>
+                                                )}
+                                                <Link to={`/tournois?id=${tournoi.id}`} className='btn btn-info'>
+                                                    Voir
+                                                </Link>
+                                                <hr />
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                );
+                            })}
+
+                        </Row>
+                    </div>
+                </Container>
+            ) : 
+            (
+                <p className='mt-5 mb-5 text-center'>Vous devez être connecté pour accèder a cette page <a href='/connexion'> SE CONNECTER </a></p>
+            )}
+
             <Footer color="footer-violet" color2="footer-violet2" />
         </div>
     );

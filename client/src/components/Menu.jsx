@@ -1,28 +1,34 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
-import React, { useState, useEffect,useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import React, { useState, useEffect, useContext } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
-import * as cookie from '../components/Cookie';
 //import { Theme } from './Theme';
 import UserContext from './UserContext';
+import { apiCall } from '../Javascript/apiCall';
+
 export const Menu = () => {
+
+  const navigate = useNavigate();
+
   const token = document.cookie;
 
   const user = useContext(UserContext);
-/*   function focusMenu() {
-    let navbar = document.querySelector('.navbar');
-    if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
-      navbar.classList.add('navbar-scrolled');
-      navbar.classList.remove('navbar-dark');
-      navbar.classList.add('navbar-light');
-    } else if (window.scrollY <= 100) {
-      navbar.classList.remove('navbar-scrolled');
-      navbar.classList.add('navbar-dark');
-      navbar.classList.remove('navbar-light');
-    }
-  } */
+  /*   function focusMenu() {
+      let navbar = document.querySelector('.navbar');
+      if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
+        navbar.classList.add('navbar-scrolled');
+        navbar.classList.remove('navbar-dark');
+        navbar.classList.add('navbar-light');
+      } else if (window.scrollY <= 100) {
+        navbar.classList.remove('navbar-scrolled');
+        navbar.classList.add('navbar-dark');
+        navbar.classList.remove('navbar-light');
+      }
+    } */
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseEnter = () => {
@@ -32,18 +38,18 @@ export const Menu = () => {
     setIsActive(false);
   };
 
-/*    const scrollColorNav = () => {
-    let navbar = document.querySelector('.navbar');
-    if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
-      navbar.classList.add('navbar-scrolled');
-      navbar.classList.remove('navbar-dark');
-
-    } else {
-      navbar.classList.remove('navbar-scrolled');
-      navbar.classList.add('navbar-dark');
+  /*    const scrollColorNav = () => {
+      let navbar = document.querySelector('.navbar');
+      if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
+        navbar.classList.add('navbar-scrolled');
+        navbar.classList.remove('navbar-dark');
+  
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+        navbar.classList.add('navbar-dark');
+      }
     }
-  }
-  window.addEventListener('scroll', scrollColorNav)  */
+    window.addEventListener('scroll', scrollColorNav)  */
   const open = () => {
     let navbar2 = document.querySelector('.navbar');
     navbar2.classList.add('navbar-scrolled');
@@ -59,22 +65,33 @@ export const Menu = () => {
   // Pour notre menu mobile ou non on adapte les classes a utilisé :
 
 
-const MyNavbar = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const MyNavbar = () => {
+    const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 992);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 992);
+      };
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
 
-  const navbarClass = isMobile ? "" : "d-flex";
-}
+    const navbarClass = isMobile ? "" : "d-flex";
+  }
+
+  const handleLogout = () => {
+    const response = apiCall('POST', 'users/logout')
+    /* if (response) {
+      
+    } else {
+      toast.error("ERREUR ! Lors de la déconnexion", {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    } */
+  }
   return (
     <Navbar id="menu" expand="lg" className="fixed-top" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Container fluid>
@@ -88,7 +105,7 @@ const MyNavbar = () => {
         <Navbar.Toggle aria-controls="navbarNav" id="mobile" />
         <Navbar.Collapse className='w-100 align-items-center justify-content-center' id="navbarNav">
           {user ? (
-             <Nav className="mt-5">
+            <Nav className="mt-5">
               <Nav.Link
                 as={Link}
                 to="/"
@@ -111,7 +128,7 @@ const MyNavbar = () => {
               </Nav.Link>
               <Nav.Item className="mx-auto sidebar-end">
                 <Nav.Link href="/connexion" className="fw-bolder">
-                  <Button className="btn-danger" onClick={cookie.delCookie} style={{ position: 'relative', overflow: 'hidden' }}>
+                  <Button className="btn-danger" onClick={handleLogout} style={{ position: 'relative', overflow: 'hidden' }}>
                     <BiLogOut className="icon-color" />
                     {isActive && (
                       <span className='text mx-1 text-black fade show animate__animated animate__fadeInLeft'>
