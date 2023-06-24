@@ -1,22 +1,23 @@
 import { createModel } from './model.js'
 
-const model = createModel('Events')
+const modelEvent = createModel('Events')
 
 const participantModel = createModel('Participants')
 
 export default {
-  ...model,
+  ...modelEvent,
 
   get: async function (id) {
-    const event = await model.get(id)
+    const event = await modelEvent.get(id)
     if (event == false) {
       return false
     }
     event.user_ids = (await participantModel.getBy({ event_id: id })).map(row => row.user_id)
+    console.log(event)
     return event
   },
   getAll: async function () {
-    const events = await model.getAll()
+    const events = await modelEvent.getAll()
     if (events.length == 0) {
       return []
     }

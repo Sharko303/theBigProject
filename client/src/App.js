@@ -14,6 +14,7 @@ import { Connexion } from './screens/Connexion'
 import { CreerTournois } from './screens/CreerTournois';
 import { ListeTournois } from './screens/ListeTournois';
 import { Tournois } from './screens/Tournois';
+import { UserInfos } from './screens/User';
 
 function App() {
 
@@ -24,35 +25,51 @@ function App() {
       try {
         const response = await apiCall('GET', 'users/me');
         setUser(response);
-        console.log('userInfos : ', user);
+        console.log('userInfos : ', response);
       } catch (error) {
         // Gérer les erreurs de l'appel API
         console.log(error);
       }
     };
 
-    fetchData();
+    if (!user) {
+      fetchData();
+    }
   }, []);
+
 
   return (
 
     <div>
-      <UserContext.Provider value={user}>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/home' element={<Home />} />
-          <Route path='/connexion' element={<Connexion />} />
-          <Route path='/inscription' element={<Inscription />} />
-
-          {/* Afficher les pages accessibles aux utilisateurs connectés */}
-          <Route path='/creertournois' element={<CreerTournois />} />
-          <Route path='/listetournois' element={<ListeTournois />} />
-          <Route path='/tournois' element={<Tournois />} />
-          {/* On redirige toutes les autres routes vers notre page d'accueil */}
-          <Route path='*' element={<Navigate to='/' />} />
-
-        </Routes>
-      </UserContext.Provider>
+      {user === null ? (
+        <div>Loading...</div>
+      ) : user === false ? (
+        <div>
+          <UserContext.Provider value={false}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/connexion' element={<Connexion />} />
+              <Route path='/inscription' element={<Inscription />} />
+              <Route path='*' element={<Navigate to='/' />} />
+            </Routes>
+          </UserContext.Provider>
+        </div>
+      ) : (
+        <div>
+          <UserContext.Provider value={user}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/creertournois' element={<CreerTournois />} />
+              <Route path='/listetournois' element={<ListeTournois />} />
+              <Route path='/tournois' element={<Tournois />} />
+              <Route path='/me' element={<UserInfos />} />
+              <Route path='*' element={<Navigate to='/' />} />
+            </Routes>
+          </UserContext.Provider>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,10 +1,18 @@
 import mariadb from 'mariadb'
 
-export function getConnection() {
+/* export function getConnection() {
   return mariadb.createConnection({
     host: "146.59.196.181",
     user: "admin",
     password: "zyhk.2Fp(r2gc030",
+    database: "theBigProject"
+  });
+} */
+export function getConnection() {
+  return mariadb.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
     database: "theBigProject"
   });
 }
@@ -41,17 +49,32 @@ export function createModel(table) {
       const values = Object.values(entity)
       const placeholder = Array(values.length).fill('?').join(', ')
       const res = await conn.query(`INSERT INTO ${conn.escapeId(table)} (${colNames}) VALUES (${placeholder})`, values)
-      const testGet = await this.get(res.insertId)
+     // const testGet = await this.get(res.insertId)
       return await this.get(res.insertId)
     },
 
-    update: async function (id, entity) {
-      const conn = await getConnection()
-      const setters = Object.keys(entity).map((colName) => `${conn.escapeId(colName)} = ?`).join(', ')
-      const values = Object.values(entity)
-      await conn.query(`UPDATE ${conn.escapeId(table)} SET ${setters} WHERE id = ?`, [...values, id])
-      return await this.get(id)
+    update: async function (idOrCond, entity) {
+      const conn = await getConnection();
+      const setters = Object.keys(entity).map((colName) => `${conn.escapeId(colName)} = ?`).join(', ');
+      const values = Object.values(entity);
+    
+      let query = `UPDATE ${conn.escapeId(table)} SET ${setters}`;
+    
+      if (typeof idOrCond === 'object') {
+        const conditionKeys = Object.keys(idOrCond);
+        const conditionValues = Object.values(idOrCond);
+        const conditions = conditionKeys.map((key) => `${conn.escapeId(key)} = ?`).join(' AND ');
+        query += ` WHERE ${conditions}`;
+        values.push(...conditionValues);
+      } else {
+        query += ` WHERE id = ?`;
+        values.push(idOrCond);
+      }
+    
+      await conn.query(query, values);
+      return await this.get(idOrCond);
     },
+    
 
     delete: async function (id) {
       const conn = await getConnection()

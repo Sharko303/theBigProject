@@ -69,6 +69,7 @@ app.get('/ws/events', eventController.getAll);
 app.get('/ws/events/:id', eventController.get);
 app.post('/ws/events', eventController.post);
 app.post('/ws/events/join', eventController.join);
+app.put('/ws/events/match/:id', eventController.setScore);
 
 
 
