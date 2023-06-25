@@ -30,10 +30,9 @@ export async function apiCall(method, path, data = false) {
 }
 
 // on crée les données pour afficher les tournois
-export async function convertToBracketData2(matches, data) {
+export async function convertToBracketData(matches, data) {
   const updatedMatches = [];
   const maxStep = Math.ceil(Math.log2(matches.length * 2));
-  console.log('max step mon gater', maxStep);
 
   const stepZeroMatches = matches.filter(match => match.step === 0);
   const countStepZeroMatches = stepZeroMatches.length;
@@ -48,7 +47,6 @@ export async function convertToBracketData2(matches, data) {
     } else {
       isWinnerPlayer1 = await isWinner(match)
       isWinnerPlayer2 = await !isWinner(match)
-      console.log(isWinnerPlayer1,isWinnerPlayer2)
     }
     const nextMatchId = calculateNextMatchId(matches, match.id);
     const matchObj = {
@@ -83,7 +81,6 @@ export async function convertToBracketData2(matches, data) {
 
   //const totalMatches = countStepZeroMatches * 2 - 1;
   const totalMatches = countStepZeroMatches * 2 - 1;
-  console.log('totalMatches', totalMatches);
   const nextMatches = createNextMatches(updatedMatches, totalMatches - matches.length);
   updatedMatches.push(...nextMatches);
 
@@ -131,7 +128,6 @@ export async function convertToBracketData2(matches, data) {
 function createNextMatches(matches, nbMatches) {
   const nextMatches = [];
   let nextMatchId = matches.length + 1;
-  console.log(matches,'tagrandmere')
   const countStepZeroMatches = matches.reduce((count, match) => {
     if (match.tournamentRoundText === 0) {
       return count + 1;
@@ -139,7 +135,6 @@ function createNextMatches(matches, nbMatches) {
       return count;
     }
   }, 0);
-  console.log("hey",nbMatches)
   for (let i = 1; i < nbMatches + 1; i++) {
     let calculatedNextMatchId = calculateNextMatchId(matches, countStepZeroMatches + i);
     calculatedNextMatchId += countStepZeroMatches + nbMatches
@@ -176,7 +171,6 @@ function createNextMatches(matches, nbMatches) {
 }
 
 function calculateNextMatchId(matches, currentMatchId) {
-  console.log("MATCH ++++", matches)
   if (matches) {
     const countStepZeroMatches = matches.reduce((count, match) => {
       if (match.step === 0) {
@@ -187,7 +181,6 @@ function calculateNextMatchId(matches, currentMatchId) {
     }, 0);
     
     const matchCount = countStepZeroMatches;
-console.log("MATCH COUNTTTTTTTTT  ", matchCount)
     if (matchCount === 1) {
       return null; // Pas de match suivant s'il y a un seul match
     }
@@ -199,7 +192,7 @@ console.log("MATCH COUNTTTTTTTTT  ", matchCount)
   }
 }
 
-export async function convertToBracketData(matches) {
+export async function convertToBracketData2(matches) {
 
   const match = [
     {
@@ -332,7 +325,6 @@ export async function convertToBracketData(matches) {
 
 // On vérifie qui est le gagnant du match en comparant les scores
 export async function isWinner(match) {
-  console.log("isWinner", match);
   if (match.score1_player1 === match.score1_player2 && match.score2_player1 === match.score2_player2) {
     if (match.score1_player1 > match.score2_player1) {
       return true

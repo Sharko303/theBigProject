@@ -2,6 +2,7 @@ import { Carousel } from 'react-bootstrap';
 import ValoCaroussel from '../images/valorant_caroussel.webp'
 import RocketCaroussel from '../images/rocket_caroussel.webp'
 import TableauCaroussel from '../images/tableau_caroussel.webp'
+
 export const RocketValoCaroussel = () => {
     return (
         <Carousel variant="dark">

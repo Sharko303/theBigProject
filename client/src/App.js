@@ -25,10 +25,8 @@ function App() {
       try {
         const response = await apiCall('GET', 'users/me');
         setUser(response);
-        console.log('userInfos : ', response);
       } catch (error) {
         // Gérer les erreurs de l'appel API
-        console.log(error);
       }
     };
 

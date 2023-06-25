@@ -1,12 +1,10 @@
 import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiPlus, BiJoystick } from 'react-icons/bi';
-import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { BiHome, BiGroup, BiUserCircle, BiLogOut, BiJoystick } from 'react-icons/bi';
 import React, { useState, useEffect, useContext } from 'react';
 import Flavicon from '../images/favicon.ico';
 import 'animate.css/animate.min.css';
-//import { Theme } from './Theme';
 import UserContext from './UserContext';
 import { apiCall } from '../Javascript/apiCall';
 
@@ -17,18 +15,7 @@ export const Menu = () => {
   const token = document.cookie;
 
   const user = useContext(UserContext);
-  /*   function focusMenu() {
-      let navbar = document.querySelector('.navbar');
-      if (!navbar.className.includes('noscroll') && !navbar.className.includes('navbar-scrolled')) {
-        navbar.classList.add('navbar-scrolled');
-        navbar.classList.remove('navbar-dark');
-        navbar.classList.add('navbar-light');
-      } else if (window.scrollY <= 100) {
-        navbar.classList.remove('navbar-scrolled');
-        navbar.classList.add('navbar-dark');
-        navbar.classList.remove('navbar-light');
-      }
-    } */
+
   const [isActive, setIsActive] = useState(false);
 
   const handleMouseEnter = () => {
@@ -38,18 +25,6 @@ export const Menu = () => {
     setIsActive(false);
   };
 
-  /*    const scrollColorNav = () => {
-      let navbar = document.querySelector('.navbar');
-      if (window.scrollY >= 100 && !navbar.className.includes('noscroll')) {
-        navbar.classList.add('navbar-scrolled');
-        navbar.classList.remove('navbar-dark');
-  
-      } else {
-        navbar.classList.remove('navbar-scrolled');
-        navbar.classList.add('navbar-dark');
-      }
-    }
-    window.addEventListener('scroll', scrollColorNav)  */
   const open = () => {
     let navbar2 = document.querySelector('.navbar');
     navbar2.classList.add('navbar-scrolled');

@@ -21,7 +21,6 @@ export const Inscription = () => {
             ...inscription,
             [name]: value,
         });
-        console.log(inscription);
     }
     const [inscription, setInscription] = useState({
         username: "",
@@ -32,7 +31,6 @@ export const Inscription = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(inscription.username, inscription.password, inscription.email);
         let response = await apiCall('POST', 'users', { 
             username: inscription.username,
             password: inscription.password,
@@ -42,7 +40,6 @@ export const Inscription = () => {
         if(response){
              // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
             
-            console.log("inscrit")
             toast.success('Inscription effectué, un mail de confirmation vous a été envoyez', {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -56,7 +53,6 @@ export const Inscription = () => {
 
     return (
         <div>
-            {/* <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" /> */}
             <Menu />
             <ToastContainer />
             <div className='body-space'>

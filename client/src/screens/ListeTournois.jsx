@@ -14,56 +14,29 @@ export const ListeTournois = () => {
     const [tournoisInscrits, setTournoisInscrits] = useState([]);
 
     const user = useContext(UserContext);
-    console.log(user)
     useEffect(() => {
             fetchTournois();
     }, []);
 
     const fetchTournois = async () => {
-
         setTournois(await apiCall('GET', 'events'))
-        console.log(tournois)
     };
     const rejoindreTournoi = async (tournoiId) => {
-        console.log(tournoiId);
         let response = apiCall('POST', 'events/join', {
             tournois_id: tournoiId
         })
 
         if (response) {
-            console.log("Success rejoin !");
-            toast.success('Création de nouveau tournois effectué !', {
+            toast.success('Vous avez bien rejoin le tournois !', {
                 position: toast.POSITION.TOP_RIGHT
             });
         } else {    
-            console.log('Echec lors de l inscription au tournois veuillez réessayer :');
-
             toast.error("Problème lors de l'inscription au tournois.", {
                 position: toast.POSITION.TOP_RIGHT
             });
         }
-        /* const data = await response.json();
-        if (data.status === 'success') {
-            // Rediriger l'utilisateur vers une nouvelle page si la réponse est un statut 200 OK
-            //window.location.href = '/home';
-            console.log("Success rejoin !");
-            toast.success('Création de nouveau tournois effectué !', {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        } else {
-            // Afficher un message d'erreur si la réponse est un statut autre que 200 OK
-            console.log('Echec lors de l inscription au tournois veuillez réessayer :', data.message);
-
-            toast.error(data.message, {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        }
-        // Logique pour rejoindre le tournoi avec l'ID donné
-        console.log('Rejoindre tournoi avec ID :', tournoiId); */
     };
 
-    let estInscrit
-    console.log(tournois)
     return (
         <div>
             <Menu />
@@ -113,7 +86,7 @@ export const ListeTournois = () => {
                                                 </ListGroup>
 
                                                 {estInscrit ? (
-                                                    <Button variant="danger" onClick={() => console.log("on quitte")}>
+                                                    <Button variant="danger">
                                                         Quitter
                                                     </Button>
                                                 ) : (
@@ -135,6 +108,7 @@ export const ListeTournois = () => {
 
                         </Row>
                     </div>
+                    <ToastContainer />
                 </Container>
             ) : 
             (

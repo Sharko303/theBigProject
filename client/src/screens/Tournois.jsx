@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { SingleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
-import { Card, Button, ListGroup, Container, Row, Col, Table, Form } from 'react-bootstrap';
-import { apiCall, convertToBracketData, convertToBracketData2 } from '../Javascript/apiCall';
+import { Button, Container, Form } from 'react-bootstrap';
+import { apiCall, convertToBracketData } from '../Javascript/apiCall';
 import UserContext from './../components/UserContext';
 
 export const Tournois = () => {
@@ -9,10 +10,8 @@ export const Tournois = () => {
   const [score1, setScore1] = useState('');
   const [score2, setScore2] = useState('');
   const [currentMatch, setCurrentMatch] = useState(null);
-  const [sourceGames, setSourceGames] = useState(null);
 
   const user = useContext(UserContext); // recupére l'utilisateur
-  console.log('UTILISATEUR', user)
 
   const location = window.location;
   const searchParams = new URLSearchParams(location.search);
@@ -21,7 +20,6 @@ export const Tournois = () => {
   useEffect(() => {
     if (id) {
       fetchTournois(id);
-      console.log("on change")
     }
   }, [id]);
 
@@ -39,11 +37,8 @@ export const Tournois = () => {
   const fetchTournois = async (id) => {
     let response = await apiCall('GET', `events/${id}`);
     if (response) {
-      console.log('Response:', response);
       const matches = response.matchs;
-      console.log('MATCH PAIRS:', response.matchs);
-      const matchs = await convertToBracketData2(matches, response);
-      console.log('matchs:', matchs);
+      const matchs = await convertToBracketData(matches, response);
       setEliminationTable(matchs);
     }
   };
@@ -67,14 +62,12 @@ export const Tournois = () => {
 
     if (response) {
       // Le score a été soumis avec succès
-      console.log('Scores soumis avec succès');
-      // Effectuez ici toute autre action nécessaire après l'envoi des scores
+      toast.success('Score soumis !');
+
     } else {
-      console.log('Une erreur s\'est produite lors de la soumission des scores');
-    };
+      toast.error('Score non soumis !');
+    }
   }
-  console.log('elimination table', eliminationTable)
-  console.log("currentMatch", currentMatch)
   return (
     <div>
       <Container fluid className='body-space'>
@@ -122,7 +115,7 @@ export const Tournois = () => {
         </Form>
       )}
 
-      {/* <ScoreForm /> */}
+      <ToastContainer />
     </div>
   );
 };

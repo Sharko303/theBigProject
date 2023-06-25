@@ -5,15 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
-import { getCookieValue } from '../components/Cookie';
 import { apiCall } from '../Javascript/apiCall';
 export const Connexion = () => {
 
     const navigate = useNavigate();
     // on change le titre de notre page
     document.title = "E-Sport | Connexion";
-
-    const token = document.cookie;
 
     /* const authenticationValue = getCookieValue('Authentification'); */
     const authenticationValue = document.cookie;
@@ -23,42 +20,12 @@ export const Connexion = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(username, password);
 
         let response = await apiCall('POST', 'users/login', { username, password })
-        console.log(response)
             if (response) {
-                console.log('on redirige')
                 /* window.location.href = '/accueil' */
                 return navigate("/home?success=true");
-            } else {
-                console.log('on redirige pas wallah')
-                toast.error("Erreur lors de la connexion", {
-                    position: toast.POSITION.TOP_RIGHT
-                });
             }
-
-
-        /* try {
-           const response = await fetch("http://localhost:8080/ws/users/login", {
-               method: "POST",
-               credentials: "include",
-               headers: {
-                   "Content-Type": "application/json",
-               },
-               body: JSON.stringify({ username, password }),
-           });
-           if (response.ok) {
-
-           } else {
-               const data = await response.json();
-               toast.error(data.message, {
-                   position: toast.POSITION.TOP_RIGHT
-               });
-           }
-       } catch (error) {
-           console.error(error);
-       }  */
 
     };
     const location = useLocation();
@@ -72,8 +39,6 @@ export const Connexion = () => {
 
         if (success === 'true' && countToast < 1) {
             toast.success('Votre compte est activé, veuillez vous connecter.');
-            console.log('toast');
-            console.log(countToast)
             countToast = 1
         } else if (error === "already_confirmed" && countToast < 1) {
             toast.warning('Votre compte est déjà activé.');
@@ -87,7 +52,6 @@ export const Connexion = () => {
     return (
 
         <div>
-            {/* <Menu color="navbar-dark" scroll="navbar-scrolled" colornav="navcolor" noscroll="noscroll" /> */}
             <Menu />
             <ToastContainer />
             {authenticationValue ? (

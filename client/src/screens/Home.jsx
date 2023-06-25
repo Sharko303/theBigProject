@@ -8,12 +8,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiGroup, BiUserCircle, BiLogOut, BiJoystick } from 'react-icons/bi';
-import * as cookie from '../components/Cookie';
 import UserContext from './../components/UserContext';
 import { apiCall } from '../Javascript/apiCall';
 
 export const Home = () => {
-    //checkCookieAndRedirect()
     // on change le titre de notre page
     document.title = "E-Sport | Accueil";
 
@@ -21,9 +19,6 @@ export const Home = () => {
 
     // on récupère les paramètres de notre url
     const location = useLocation();
-
-    // on récupère le token
-    const token = localStorage.getItem('token');
 
 
     let countToast = 0; // on compte les toast pour éviter d'en avoir plus d'1
@@ -37,35 +32,11 @@ export const Home = () => {
             countToast = 1
         }
     }, [location.search]);
-    /*     useEffect(() => {
-            const fetchData = async () => {
-                try {
-                    const response = await apiCall('GET', 'users/me');
-                    setUser(response);
-                } catch (error) {
-                    // Gérer les erreurs de l'appel API
-                    console.log(error);
-                }
-            };
-    
-            fetchData();
-            console.log(user)
-        }, []); */
 const handleLogout = () => {
     const response = apiCall('POST', 'users/logout')
-    /* if (response) {
-      
-    } else {
-      toast.error("ERREUR ! Lors de la déconnexion", {
-        position: toast.POSITION.TOP_RIGHT
-      });
-    } */
 }
     return (
         <div>
-            <UserContext.Provider value={user}>
-                {/* Le reste de votre composant */}
-            </UserContext.Provider>
 
             <header>
                 <Menu />
