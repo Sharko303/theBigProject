@@ -142,7 +142,7 @@ function createNextMatches(matches, nbMatches) {
   console.log("hey",nbMatches)
   for (let i = 1; i < nbMatches + 1; i++) {
     let calculatedNextMatchId = calculateNextMatchId(matches, countStepZeroMatches + i);
-    calculatedNextMatchId += countStepZeroMatches + nbMatches 
+    calculatedNextMatchId += countStepZeroMatches + nbMatches
     
     if (i == nbMatches) {
       const matchObj2 = {

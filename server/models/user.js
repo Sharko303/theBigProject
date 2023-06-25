@@ -10,29 +10,39 @@ const model = createModel('Users')
 export default {
   ...model,
 
-  // Je peux remplecer des fonctions existante
-  create: async function (entity) {
-    entity.password = await bcrypt.hash(entity.password, 10)
-    // Et même les réutiliser pour pas recopier du code
-    return model.create(entity)
-  },
+    create: async function (entity) {
+        // Hachage du mot de passe avant la création de l'entité
+        entity.password = await bcrypt.hash(entity.password, 10);
 
-  alreadyUsed : async function (username, email) {
-    let result;
-    const conn = await getConnection();
-    try {
+        // Réutilisation de la fonction create existante dans le modèle
+        return model.create(entity);
+    },
+
+    alreadyUsed: async function (username, email) {
+        let result;
+
+        // Établir une connexion à la base de données
+        const conn = await getConnection();
+
+        try {
+            // Exécuter une requête pour vérifier si le nom d'utilisateur ou l'email est déjà utilisé
             const rows = await conn.query(`SELECT * FROM Users WHERE username LIKE '${username}' OR email LIKE '${email}'`);
+
             if (rows.length > 0) {
-                    result = true;
-                    console.log("existe");
+                // Si des résultats sont trouvés, cela signifie que le nom d'utilisateur ou l'email est déjà utilisé
+                result = true;
+                console.log("existe");
             } else {
-                    result = false;
-                    console.log("existe pas ")
+                // Sinon, cela signifie que le nom d'utilisateur et l'email ne sont pas déjà utilisés
+                result = false;
+                console.log("existe pas ");
             }
-    } catch (err) {
+        } catch (err) {
             console.error("Erreur lors de l'exécution de la requête SELECT:", err);
             throw err;
+        }
+
+        return result;
     }
-    return result
-}
+
 }

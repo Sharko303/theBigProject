@@ -35,7 +35,7 @@ export const ListeTournois = () => {
             toast.success('Création de nouveau tournois effectué !', {
                 position: toast.POSITION.TOP_RIGHT
             });
-        } else {
+        } else {    
             console.log('Echec lors de l inscription au tournois veuillez réessayer :');
 
             toast.error("Problème lors de l'inscription au tournois.", {
