@@ -61,7 +61,7 @@ const handleLogout = () => {
                                             <Col lg={12} md={4}>
                                                 <Container className="text-center" >
                                                     <Card className='bg-warning'>
-                                                        <Card.Title><h1>E-Sport</h1></Card.Title>
+                                                        <Card.Title><h1>Test</h1></Card.Title>
                                                     </Card>
                                                 </Container>
 

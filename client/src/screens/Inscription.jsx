@@ -58,10 +58,10 @@ export const Inscription = () => {
             <div className='body-space'>
                 <section className="h-100 gradient-form conins-style">
                     <Row>
-                        <Col lg={2} md={2}>
+                        <Col lg={1} md={1}>
                             <Container className="text-center" >
                                 <Card className='w-100 title-background bg-warning'>
-                                    <Card.Title><h1>E-Sport</h1></Card.Title>
+                                    <Card.Title><h1>Test</h1></Card.Title>
                                 </Card>
                             </Container>
                         </Col>
@@ -92,7 +92,7 @@ export const Inscription = () => {
                                                         </Form.Group>
                                                         <Form.Group className="form-floating mb-4">
                                                             <Form.Control type="email" name="email" placeholder="Entrer une adresse email" onChange={(handleChanges)} required />
-                                                            <Form.Label htmlFor="email">Adresse mail</Form.Label>
+                                                            <Form.Label htmlFor="email">Addresse mail</Form.Label>
                                                         </Form.Group>
                                                         <Form.Group className="form-floating mb-4">
                                                             <Form.Control type="password" name="password" placeholder="Entrer un mot de passe" onChange={(handleChanges)} required />
