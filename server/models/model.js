@@ -1,5 +1,6 @@
 import mariadb from 'mariadb'
 export function getConnection() {
+  console.log("mdp",process.env.PASSWORD)
   return mariadb.createConnection({
     host: process.env.HOST,
     user: process.env.USER,
