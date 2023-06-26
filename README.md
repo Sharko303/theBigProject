@@ -38,6 +38,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
      ```
      npm install
      ```
+    - Ou alors il faut télécharger le fichier zip du projet sur votre machine.
 
 3. BackEnd
 
